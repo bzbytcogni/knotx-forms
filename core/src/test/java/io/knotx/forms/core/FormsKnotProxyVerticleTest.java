@@ -21,18 +21,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.common.collect.Lists;
-import io.knotx.dataobjects.AdapterRequest;
-import io.knotx.dataobjects.AdapterResponse;
 import io.knotx.dataobjects.ClientResponse;
 import io.knotx.dataobjects.Fragment;
 import io.knotx.dataobjects.KnotContext;
-import io.knotx.http.MultiMapCollector;
+import io.knotx.forms.api.FormsAdapterProxy;
+import io.knotx.forms.api.FormsAdapterRequest;
+import io.knotx.forms.api.FormsAdapterResponse;
 import io.knotx.forms.core.util.KnotContextFactory;
+import io.knotx.http.MultiMapCollector;
 import io.knotx.junit5.KnotxApplyConfiguration;
 import io.knotx.junit5.KnotxExtension;
 import io.knotx.junit5.KnotxTestUtils;
 import io.knotx.junit5.util.FileReader;
-import io.knotx.proxy.AdapterProxy;
 import io.knotx.reactivex.proxy.KnotProxy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.reactivex.Single;
@@ -265,30 +265,31 @@ public class FormsKnotProxyVerticleTest {
 
   private void createMockAdapter(Vertx vertx, String address, String addToBody, String signal,
       Map<String, List<String>> headers) {
-    Function<AdapterRequest, AdapterResponse> adapter = adapterRequest -> {
+    Function<FormsAdapterRequest, FormsAdapterResponse> adapter = adapterRequest -> {
       ClientResponse response = new ClientResponse();
       response.setStatusCode(HttpResponseStatus.OK.code());
       response.setBody(Buffer.buffer().appendString(addToBody));
       response.setHeaders(
           headers.keySet().stream().collect(MultiMapCollector.toMultiMap(o -> o, headers::get)));
-      return new AdapterResponse().setResponse(response).setSignal(signal);
+      return new FormsAdapterResponse().setResponse(response).setSignal(signal);
     };
 
     new ServiceBinder(vertx.getDelegate())
         .setAddress(address)
-        .register(AdapterProxy.class, new MockAdapterImpl(adapter));
+        .register(FormsAdapterProxy.class, new MockAdapterImpl(adapter));
   }
 
-  private class MockAdapterImpl implements AdapterProxy {
+  private class MockAdapterImpl implements FormsAdapterProxy {
 
-    private final Function<AdapterRequest, AdapterResponse> adapter;
+    private final Function<FormsAdapterRequest, FormsAdapterResponse> adapter;
 
-    private MockAdapterImpl(Function<AdapterRequest, AdapterResponse> adapter) {
+    private MockAdapterImpl(Function<FormsAdapterRequest, FormsAdapterResponse> adapter) {
       this.adapter = adapter;
     }
 
     @Override
-    public void process(AdapterRequest request, Handler<AsyncResult<AdapterResponse>> result) {
+    public void process(FormsAdapterRequest request,
+        Handler<AsyncResult<FormsAdapterResponse>> result) {
       result.handle(Future.succeededFuture(adapter.apply(request)));
     }
   }
