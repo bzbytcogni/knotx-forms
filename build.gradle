@@ -15,10 +15,12 @@
  */
 plugins {
   id 'io.spring.dependency-management' version '1.0.5.RELEASE' apply false
+  id 'maven'
 }
 
 allprojects {
   repositories {
+    mavenLocal()
     jcenter()
     maven { url 'https://plugins.gradle.org/m2/' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
@@ -117,7 +119,7 @@ subprojects { subproject ->
     ]
   }
 
-  if (subproject.name != 'knotx-databridge-it-test') {
+  if (subproject.name != 'knotx-forms-it-test') {
     apply from: "${rootProject.projectDir}/release.gradle"
   }
 }
