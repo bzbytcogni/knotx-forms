@@ -31,7 +31,6 @@ import io.knotx.forms.core.util.KnotContextFactory;
 import io.knotx.http.MultiMapCollector;
 import io.knotx.junit5.KnotxApplyConfiguration;
 import io.knotx.junit5.KnotxExtension;
-import io.knotx.junit5.KnotxTestUtils;
 import io.knotx.junit5.util.FileReader;
 import io.knotx.reactivex.proxy.KnotProxy;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -79,7 +78,7 @@ public class FormsKnotProxyVerticleTest {
   @KnotxApplyConfiguration("knotx-test.json")
   public void callGetWithNoActionFragments_expectResponseOkNoFragmentChanges(
       VertxTestContext context, Vertx vertx) throws Exception {
-    String expectedTemplatingFragment = KnotxTestUtils.readText("fragment_templating_out.txt");
+    String expectedTemplatingFragment = FileReader.readText("fragment_templating_out.txt");
     KnotContext knotContext = createKnotContext(FIRST_FRAGMENT, LAST_FRAGMENT,
         "fragment_templating_in.txt");
     knotContext.getClientRequest().setMethod(HttpMethod.GET);
@@ -103,8 +102,8 @@ public class FormsKnotProxyVerticleTest {
   @KnotxApplyConfiguration("knotx-test.json")
   public void callGetWithTwoActionFragments_expectResponseOkTwoFragmentChanges(
       VertxTestContext context, Vertx vertx) throws Exception {
-    String expectedRedirectFormFragment = KnotxTestUtils.readText("fragment_form_redirect_out.txt");
-    String expectedSelfFormFragment = KnotxTestUtils.readText("fragment_form_self_out.txt");
+    String expectedRedirectFormFragment = FileReader.readText("fragment_form_redirect_out.txt");
+    String expectedSelfFormFragment = FileReader.readText("fragment_form_self_out.txt");
     KnotContext knotContext = createKnotContext(FIRST_FRAGMENT, LAST_FRAGMENT,
         "fragment_form_redirect_in.txt", "fragment_form_self_in.txt");
     knotContext.getClientRequest().setMethod(HttpMethod.GET);
@@ -130,7 +129,7 @@ public class FormsKnotProxyVerticleTest {
   public void callGetWithActionFragmentWithoutIdentifier_expectResponseOkWithOneFragmentChanges(
       VertxTestContext context, Vertx vertx) throws Exception {
     KnotContext knotContext = createKnotContext("fragment_form_no_identifier_in.txt");
-    String expectedFragmentHtml = KnotxTestUtils.readText("fragment_form_no_identifier_out.txt");
+    String expectedFragmentHtml = FileReader.readText("fragment_form_no_identifier_out.txt");
     knotContext.getClientRequest().setMethod(HttpMethod.GET);
 
     callActionKnotWithAssertions(context, vertx, knotContext,
