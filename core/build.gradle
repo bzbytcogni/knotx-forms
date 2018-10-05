@@ -23,7 +23,7 @@ configurations {
 
 dependencies {
     compile project(':knotx-forms-api')
-    testCompile group: 'io.knotx', name: 'knotx-core', version: '1.4.0-SNAPSHOT', classifier: 'tests'
+    testCompile group: 'io.knotx', name: 'knotx-core', version: '1.4.1-SNAPSHOT', classifier: 'tests'
     testResources sourceSets.test.output
 }
 
