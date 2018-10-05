@@ -36,7 +36,7 @@ Set the service parameters to be consumed by the adapter.
 == FormsKnotOptions
 
 ++++
- Describes an Action Knot configuration options
+ Describes an Forms Knot configuration options
 ++++
 '''
 
@@ -59,6 +59,6 @@ Sets the Vert.x Event Bus Delivery Options
 +++
 |[[formIdentifierName]]`formIdentifierName`|`String`|
 +++
-Sets the name of the hidden input tag which is added by Action Knot.
+Sets the name of the hidden input tag which is added by Forms Knot.
 +++
 |===

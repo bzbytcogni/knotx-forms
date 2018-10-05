@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Describes an Action Knot configuration options
+ * Describes an Forms Knot configuration options
  */
 @DataObject(generateConverter = true, publicConverter = false)
 public class FormsKnotOptions {
@@ -31,7 +31,7 @@ public class FormsKnotOptions {
   /**
    * Default EB address of the verticle
    */
-  public final static String DEFAULT_ADDRESS = "knotx.knot.action";
+  public final static String DEFAULT_ADDRESS = "knotx.knot.forms";
 
   private String address;
   private List<FormsDefinition> adapters;
@@ -146,7 +146,7 @@ public class FormsKnotOptions {
   }
 
   /**
-   * Sets the name of the hidden input tag which is added by Action Knot.
+   * Sets the name of the hidden input tag which is added by Forms Knot.
    *
    * @param formIdentifierName the form identifier name
    */

@@ -121,9 +121,9 @@ public class FormEntity {
         .map(knot -> RegExUtils.removePattern(knot, FormConstants.FRAGMENT_KNOT_PATTERN))
         .map(id -> StringUtils.isBlank(id) ? FormConstants.FORM_DEFAULT_IDENTIFIER : id)
         .findFirst().orElseThrow(() -> {
-          LOGGER.error("Could not find action adapter name in fragment [{}].",
+          LOGGER.error("Could not find forms adapter name in fragment [{}].",
               fragment);
-          return new NoSuchElementException("Could not find action adapter name");
+          return new NoSuchElementException("Could not find forms adapter name");
         });
   }
 
@@ -132,9 +132,9 @@ public class FormEntity {
         .getElementsByAttribute(FormConstants.FORM_ACTION_ATTR).first())
         .map(element -> element.attr(FormConstants.FORM_ACTION_ATTR))
         .orElseThrow(() -> {
-          LOGGER.error("Could not find action adapter name in fragment [{}].",
+          LOGGER.error("Could not find forms adapter name in fragment [{}].",
               fragment);
-          return new NoSuchElementException("Could not find action adapter name");
+          return new NoSuchElementException("Could not find forms adapter name");
         });
   }
 
@@ -154,7 +154,7 @@ public class FormEntity {
         .orElseThrow(() -> {
           LOGGER.error("Could not find adapter name [{}] mapping in FormsKnotOptions [{}].",
               adapter, options.getAdapters());
-          return new ConfigurationException("Could not find action adapter name!");
+          return new ConfigurationException("Could not find forms adapter name!");
         });
   }
 

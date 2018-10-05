@@ -62,7 +62,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class FormsKnotProxyVerticleTest {
 
   public static final String KNOT_TRANSITION = "next";
-  private final static String ADDRESS = "knotx.knot.action";
+  private final static String ADDRESS = "knotx.knot.forms";
   private final static String HIDDEN_INPUT_TAG_NAME = "snippet-identifier";
   private static final String FRAGMENT_KNOTS = "data-knotx-knots";
   private final static String FRAGMENT_REDIRECT_IDENTIFIER = "someId123";
