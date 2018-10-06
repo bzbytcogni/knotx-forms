@@ -25,6 +25,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.client.WebClient;
 
+@Deprecated
 public class HttpFormsAdapterProxy extends AbstractFormsAdapterProxy {
 
   private HttpClientFacade httpClientFacade;

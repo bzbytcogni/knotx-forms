@@ -26,6 +26,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+@Deprecated
 public final class UrlEncodedBodyBuilder {
 
   private UrlEncodedBodyBuilder() {

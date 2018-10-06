@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 
+@Deprecated
 public class RequestPlaceholderSubstitutor implements PlaceholderSubstitutor {
 
   @Override

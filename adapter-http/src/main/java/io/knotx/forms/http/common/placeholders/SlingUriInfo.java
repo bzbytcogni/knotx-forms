@@ -15,6 +15,7 @@
  */
 package io.knotx.forms.http.common.placeholders;
 
+@Deprecated
 public class SlingUriInfo {
 
   private String path;

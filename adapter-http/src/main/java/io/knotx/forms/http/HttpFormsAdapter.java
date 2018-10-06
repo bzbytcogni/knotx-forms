@@ -27,6 +27,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.serviceproxy.ServiceBinder;
 
+@Deprecated
 public class HttpFormsAdapter extends AbstractVerticle {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpFormsAdapter.class);

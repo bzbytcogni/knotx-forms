@@ -22,6 +22,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.net.URI;
 import java.util.Arrays;
 
+@Deprecated
 public class UriPlaceholderSubstitutor implements PlaceholderSubstitutor {
 
   private static final String URI_PREFIX = "uri.";

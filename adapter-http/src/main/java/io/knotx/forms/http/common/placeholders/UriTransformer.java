@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Deprecated
 public final class UriTransformer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UriTransformer.class);
