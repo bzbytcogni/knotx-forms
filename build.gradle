@@ -114,6 +114,10 @@ subprojects { subproject ->
   annotationProcessing.dependsOn annotationProcessingCleanup
 
   test {
+    useJUnitPlatform()
+
+    include 'io/knotx/forms/**'
+
     systemProperties = [
         'vertx.logger-delegate-factory-class-name': 'io.vertx.core.logging.SLF4JLogDelegateFactory'
     ]
