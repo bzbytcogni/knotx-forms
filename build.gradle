@@ -51,12 +51,12 @@ subprojects { subproject ->
   }
 
   dependencies {
-    compile 'io.knotx:knotx-core'
 
-    compile 'io.vertx:vertx-core'
-    compile 'io.vertx:vertx-service-proxy'
-    compile 'io.vertx:vertx-rx-java2'
 
+    compileOnly 'io.knotx:knotx-core'
+    compileOnly 'io.vertx:vertx-core'
+    compileOnly 'io.vertx:vertx-service-proxy'
+    compileOnly 'io.vertx:vertx-rx-java2'
     compileOnly 'io.vertx:vertx-codegen'
 
     // Test dependencies
@@ -70,6 +70,11 @@ subprojects { subproject ->
     testCompile 'com.github.tomakehurst:wiremock'
 
     testCompileOnly 'io.vertx:vertx-codegen'
+    testCompileOnly 'io.knotx:knotx-core'
+    testCompileOnly 'io.vertx:vertx-core'
+    testCompileOnly 'io.vertx:vertx-service-proxy'
+    testCompileOnly 'io.vertx:vertx-rx-java2'
+
     testCompile 'io.vertx:vertx-config'
     testCompile 'io.vertx:vertx-junit5'
     testCompile 'io.knotx:knotx-mocks'

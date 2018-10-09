@@ -22,8 +22,9 @@ configurations {
 }
 
 dependencies {
-    compile project(':knotx-forms-api')
-    testCompile group: 'io.knotx', name: 'knotx-core', version: '1.4.1-SNAPSHOT', classifier: 'tests'
+    compileOnly project(':knotx-forms-api')
+    testCompileOnly project(':knotx-forms-api')
+    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.4.1-SNAPSHOT', classifier: 'tests'
     testResources sourceSets.test.output
 }
 
