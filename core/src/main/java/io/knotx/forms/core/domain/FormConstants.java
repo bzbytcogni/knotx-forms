@@ -23,7 +23,7 @@ public class FormConstants {
 
   static final String FRAGMENT_KNOT_PATTERN = "form(-)?";
   static final String FORM_SIGNAL_ATTR_PREFIX = "data-knotx-forms-on-";
-  static final String FORM_ACTION_ATTR = "data-knotx-forms-action";
+  static final String FORM_ACTION_ATTR = "data-knotx-forms-adapter";
   static final String FORM_ADAPTER_PARAMS = "data-knotx-forms-adapter-params";
 
   static final String ACTION_FORM_ATTRIBUTES_PATTERN = "data-knotx-.*";
