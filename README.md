@@ -41,7 +41,7 @@ This is how form looks in the repository:
   <p class="bg-danger">Email address does not exists</p>
   {{/if}}
   <p>Please provide your email address</p>
-  <form data-knotx-action="step1" data-knotx-on-success="/content/local/login/step2.html" data-knotx-on-error="_self" data-knotx-adapter-params='{"myKey":"myValue"}' method="post">
+  <form data-knotx-forms-action="step1" data-knotx-forms-on-success="/content/local/login/step2.html" data-knotx-forms-on-error="_self" data-knotx-forms-adapter-params='{"myKey":"myValue"}' method="post">
     <input type="email" name="email" value="{{#if action._result.validationError}} {{action._result.form.email}} {{/if}}" />
     <input type="submit" value="Submit"/>
   </form>
@@ -57,14 +57,14 @@ is automatically added by Forms Knot and is used to distinguish a requested form
 attribute - it retrieve a `{NAME}` value from `data-knotx-knots="form-{NAME}"`.
 
 Following data attributes are available in the `<form>` tag with described purpose:
-- `data-knotx-action` - this is a name of an Forms Adapter that will be used to handle submitted data.
+- `data-knotx-forms-action` - this is a name of an Forms Adapter that will be used to handle submitted data.
 It is similar concept as `data-knotx-service-{NAME}` in Service Knot. In the example,
 Forms Handler registered under name `step1` will handle this form data submission.
-- `data-knotx-on-{SIGNAL}` - name of a [Signal](#Signal) that should be applied. In the example
+- `data-knotx-forms-on-{SIGNAL}` - name of a [Signal](#Signal) that should be applied. In the example
 there is one signal success with the value `'/content/local/login/step2.html'` and one signal error
 with the value `'_self'`. Signal `'_self'` means that after error response (error signal returned)
 the client will stay on the same page.
-- `data-knotx-adapter-params` - JSON Object that can be passed to the corresponding `Adapter`. It will be
+- `data-knotx-forms-adapter-params` - JSON Object that can be passed to the corresponding `Adapter`. It will be
 available in `AdapterRequest` as `adapterParams`. 
 
 

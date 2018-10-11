@@ -1,5 +1,5 @@
 <script data-knotx-knots="form-123" type="text/knotx-snippet">
-    <form data-knotx-action="action-handler-not-exists" data-knotx-on-step2="/content/form/step2.html">
+    <form data-knotx-forms-action="action-handler-not-exists" data-knotx-forms-on-step2="/content/form/step2.html">
         {{someValue}}
         <div class="form-group">
             <label for="email2">Email</label>
