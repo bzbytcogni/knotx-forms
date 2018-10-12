@@ -58,7 +58,7 @@ attribute - it retrieve a `{NAME}` value from `data-knotx-knots="form-{NAME}"`.
 
 Following data attributes are available in the `<form>` tag with described purpose:
 - `data-knotx-forms-adapter` - this is a name of an Forms Adapter that will be used to handle submitted data.
-It is similar concept as `data-knotx-service-{NAME}` in Service Knot. In the example,
+It is similar concept as `data-knotx-databridge-{NAME}` in [Data Bridge](https://github.com/Knotx/knotx-data-bridge). In the example,
 Forms Handler registered under name `step1` will handle this form data submission.
 - `data-knotx-forms-on-{SIGNAL}` - name of a [Signal](#Signal) that should be applied. In the example
 there is one signal success with the value `'/content/local/login/step2.html'` and one signal error
