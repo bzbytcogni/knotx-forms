@@ -35,7 +35,7 @@ public class DefaultFormTransformer implements FormTransformer {
   public String transform(String content, String formIdAttrName, String formIdAttrValue) {
     Element scriptContentDocument = FragmentContentExtractor.unwrapContent(content);
     Element actionFormElement = scriptContentDocument.getElementsByAttribute(
-        FormConstants.FORM_ACTION_ATTR).first();
+        FormConstants.FORM_ADAPTER_ATTR).first();
 
     LOGGER.debug("Changing form with identifier [{}]", formIdAttrValue);
     addHiddenInputTag(actionFormElement, formIdAttrName, formIdAttrValue);

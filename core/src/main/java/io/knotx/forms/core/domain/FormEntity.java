@@ -129,8 +129,8 @@ public class FormEntity {
 
   private static String getAdapterName(Fragment fragment, Element scriptDocument) {
     return Optional.ofNullable(scriptDocument
-        .getElementsByAttribute(FormConstants.FORM_ACTION_ATTR).first())
-        .map(element -> element.attr(FormConstants.FORM_ACTION_ATTR))
+        .getElementsByAttribute(FormConstants.FORM_ADAPTER_ATTR).first())
+        .map(element -> element.attr(FormConstants.FORM_ADAPTER_ATTR))
         .orElseThrow(() -> {
           LOGGER.error("Could not find forms adapter name in fragment [{}].",
               fragment);
