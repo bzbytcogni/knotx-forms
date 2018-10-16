@@ -15,12 +15,37 @@
  */
 description = "Knot.x Forms Integration Tests"
 
+compileJava.dependsOn annotationProcessing
+
 dependencies {
-  compile project(':knotx-forms-core')
+  compileOnly project(':knotx-forms-api')
+  testCompile project(':knotx-forms-api')
+  compileOnly project(':knotx-forms-core')
+  testCompile project(':knotx-forms-core')
 
-  compile "io.vertx:vertx-web-client"
+  compileOnly "io.vertx:vertx-web-client"
 
-  testCompile project(path: ':knotx-forms-core', configuration: 'testResources')
+//  testCompile project(path: ':knotx-forms-core', configuration: 'testResources')
+
+  compileOnly 'io.knotx:knotx-core'
+  compileOnly 'io.vertx:vertx-core'
+  compileOnly 'io.vertx:vertx-rx-java2'
+  compileOnly 'io.vertx:vertx-web-client'
+  compileOnly 'io.vertx:vertx-service-proxy'
+  compileOnly 'io.vertx:vertx-codegen'
+
+
+  testCompile 'junit:junit'
+  testCompile 'org.powermock:powermock-api-mockito'
+  testCompile 'org.powermock:powermock-module-junit4'
+  testCompile 'org.hamcrest:hamcrest-all'
+  testCompile 'org.mockito:mockito-all'
+  testCompile 'io.vertx:vertx-unit'
+  testCompile 'io.vertx:vertx-config'
+  testCompileOnly 'io.vertx:vertx-codegen'
+//
+//  testCompile 'io.knotx:knotx-core::tests'
+//  testCompile "io.knotx:knotx-mocks:$knotxVersion"
 }
 
 sourceSets {

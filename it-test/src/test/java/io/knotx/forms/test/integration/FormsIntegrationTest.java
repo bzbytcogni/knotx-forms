@@ -63,8 +63,8 @@ public class FormsIntegrationTest {
   }
 
   @Test
-  @KnotxApplyConfiguration("bridgeStack.conf")
-  public void callDataBridge_validKnotContextResult(
+  @KnotxApplyConfiguration("formsStack.conf")
+  public void callForms_validKnotContextResult(
       VertxTestContext context, Vertx vertx)
       throws IOException, URISyntaxException {
 
@@ -100,7 +100,7 @@ public class FormsIntegrationTest {
     return new KnotContext()
         .setClientRequest(new ClientRequest())
         .setFragments(Collections.singletonList(
-            Fragment.snippet(Collections.singletonList("databridge"), fragmentContent)));
+            Fragment.snippet(Collections.singletonList("forms"), fragmentContent)));
   }
 
 }
