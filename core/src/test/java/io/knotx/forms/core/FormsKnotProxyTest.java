@@ -59,10 +59,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(KnotxExtension.class)
-public class FormsKnotProxyVerticleTest {
+public class FormsKnotProxyTest {
 
   public static final String KNOT_TRANSITION = "next";
-  private final static String ADDRESS = "knotx.knot.action";
+  private final static String ADDRESS = "knotx.knot.forms";
   private final static String HIDDEN_INPUT_TAG_NAME = "snippet-identifier";
   private static final String FRAGMENT_KNOTS = "data-knotx-knots";
   private final static String FRAGMENT_REDIRECT_IDENTIFIER = "someId123";
@@ -75,7 +75,7 @@ public class FormsKnotProxyVerticleTest {
 
 
   @Test
-  @KnotxApplyConfiguration("knotx-test.json")
+  @KnotxApplyConfiguration("knotx-test.conf")
   public void callGetWithNoActionFragments_expectResponseOkNoFragmentChanges(
       VertxTestContext context, Vertx vertx) throws Exception {
     String expectedTemplatingFragment = FileReader.readText("fragment_templating_out.txt");
