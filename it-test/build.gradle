@@ -20,9 +20,11 @@ compileJava.dependsOn annotationProcessing
 dependencies {
   compileOnly project(':knotx-forms-api')
   compileOnly project(':knotx-forms-core')
+  compileOnly "io.vertx:vertx-web-client"
 
   testCompile project(':knotx-forms-api')
   testCompile project(':knotx-forms-core')
+  testCompile "io.vertx:vertx-web-client"
 }
 
 sourceSets {
