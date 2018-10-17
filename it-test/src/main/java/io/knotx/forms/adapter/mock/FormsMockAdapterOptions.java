@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.knotx.forms.adapter.mock.configuration;
+package io.knotx.forms.adapter.mock;
 
 import io.knotx.configuration.CustomHttpHeader;
 import io.vertx.codegen.annotations.DataObject;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 
 @DataObject(generateConverter = true, publicConverter = false)
-public class HttpFormsAdapterOptions {
+public class FormsMockAdapterOptions {
 
   /**
    * Default EB address of the adapter = knotx.adapter.service.http
@@ -36,13 +36,13 @@ public class HttpFormsAdapterOptions {
 
   private String address;
   private WebClientOptions clientOptions;
-  private List<HttpFormsSettings> services;
+  private List<FormsMockAdapterDefinition> services;
   private CustomHttpHeader customHttpHeader;
 
   /**
    * Default constructor
    */
-  public HttpFormsAdapterOptions() {
+  public FormsMockAdapterOptions() {
     init();
   }
 
@@ -52,8 +52,8 @@ public class HttpFormsAdapterOptions {
    *
    * @param other the instance to copy
    */
-  public HttpFormsAdapterOptions(
-      HttpFormsAdapterOptions other) {
+  public FormsMockAdapterOptions(
+      FormsMockAdapterOptions other) {
     this.address = other.address;
     this.clientOptions = new WebClientOptions(other.clientOptions);
     this.services = new ArrayList<>(other.services);
@@ -65,9 +65,9 @@ public class HttpFormsAdapterOptions {
    *
    * @param json the JSON
    */
-  public HttpFormsAdapterOptions(JsonObject json) {
+  public FormsMockAdapterOptions(JsonObject json) {
     init();
-    HttpFormsAdapterOptionsConverter.fromJson(json, this);
+    FormsMockAdapterOptionsConverter.fromJson(json, this);
   }
 
   /**
@@ -77,7 +77,7 @@ public class HttpFormsAdapterOptions {
    */
   public JsonObject toJson() {
     JsonObject json = new JsonObject();
-    HttpFormsAdapterOptionsConverter.toJson(this, json);
+    FormsMockAdapterOptionsConverter.toJson(this, json);
     return json;
   }
 
@@ -102,7 +102,7 @@ public class HttpFormsAdapterOptions {
    * @param address an event bus address
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsAdapterOptions setAddress(
+  public FormsMockAdapterOptions setAddress(
       String address) {
     this.address = address;
     return this;
@@ -122,28 +122,29 @@ public class HttpFormsAdapterOptions {
    * @param clientOptions clientOptions
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsAdapterOptions setClientOptions(
+  public FormsMockAdapterOptions setClientOptions(
       WebClientOptions clientOptions) {
     this.clientOptions = clientOptions;
     return this;
   }
 
   /**
-   * @return a list of {@link HttpFormsSettings} describing all service endpoints the ServiceAdapter
-   * need to communicate
+   * @return a list of {@link FormsMockAdapterDefinition} describing all service endpoints the
+   * ServiceAdapter need to communicate
    */
-  public List<HttpFormsSettings> getServices() {
+  public List<FormsMockAdapterDefinition> getServices() {
     return services;
   }
 
   /**
    * Sets the configuration of each service endpoint used by the adapter.
    *
-   * @param services the {@link HttpFormsSettings} objects representing each service endpoint
+   * @param services the {@link FormsMockAdapterDefinition} objects representing each service
+   * endpoint
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsAdapterOptions setServices(
-      List<HttpFormsSettings> services) {
+  public FormsMockAdapterOptions setServices(
+      List<FormsMockAdapterDefinition> services) {
     this.services = services;
     return this;
   }
@@ -162,7 +163,7 @@ public class HttpFormsAdapterOptions {
    * @param customHttpHeader the header name &amp; value
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsAdapterOptions setCustomHttpHeader(
+  public FormsMockAdapterOptions setCustomHttpHeader(
       CustomHttpHeader customHttpHeader) {
     this.customHttpHeader = customHttpHeader;
     return this;

@@ -17,7 +17,6 @@ package io.knotx.forms.adapter.mock;
 
 
 import io.knotx.dataobjects.ClientResponse;
-import io.knotx.forms.adapter.mock.configuration.HttpFormsAdapterOptions;
 import io.knotx.forms.api.FormsAdapterRequest;
 import io.knotx.forms.api.FormsAdapterResponse;
 import io.knotx.forms.api.reactivex.AbstractFormsAdapterProxy;
@@ -26,11 +25,11 @@ import io.reactivex.Single;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.reactivex.core.Vertx;
 
-public class FormsMockAdapterProxyImpl extends AbstractFormsAdapterProxy {
+public class FormsMockAdapterProxy extends AbstractFormsAdapterProxy {
 
 //  private HttpClientFacade httpClientFacade;
 
-  public FormsMockAdapterProxyImpl(Vertx vertx, HttpFormsAdapterOptions configuration) {
+  public FormsMockAdapterProxy(Vertx vertx, FormsMockAdapterOptions configuration) {
 //    this.httpClientFacade = new HttpClientFacade(
 //        WebClient.create(vertx, configuration.getClientOptions()),
 //        configuration);

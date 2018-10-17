@@ -16,7 +16,6 @@
 package io.knotx.forms.adapter.mock;
 
 
-import io.knotx.forms.adapter.mock.configuration.HttpFormsAdapterOptions;
 import io.knotx.forms.api.FormsAdapterProxy;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
@@ -31,7 +30,7 @@ public class FormsMockAdapter extends AbstractVerticle {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FormsMockAdapter.class);
 
-  private HttpFormsAdapterOptions configuration;
+  private FormsMockAdapterOptions configuration;
 
   private MessageConsumer<JsonObject> consumer;
 
@@ -40,7 +39,7 @@ public class FormsMockAdapter extends AbstractVerticle {
   @Override
   public void init(Vertx vertx, Context context) {
     super.init(vertx, context);
-    this.configuration = new HttpFormsAdapterOptions(config());
+    this.configuration = new FormsMockAdapterOptions(config());
   }
 
   @Override
@@ -51,7 +50,7 @@ public class FormsMockAdapter extends AbstractVerticle {
     serviceBinder = new ServiceBinder(getVertx());
     consumer = serviceBinder
         .setAddress(configuration.getAddress())
-        .register(FormsAdapterProxy.class, new FormsMockAdapterProxyImpl(vertx, configuration));
+        .register(FormsAdapterProxy.class, new FormsMockAdapterProxy(vertx, configuration));
   }
 
   @Override

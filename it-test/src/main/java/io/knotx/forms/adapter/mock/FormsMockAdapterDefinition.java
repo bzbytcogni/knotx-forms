@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.knotx.forms.adapter.mock.configuration;
+package io.knotx.forms.adapter.mock;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.codegen.annotations.GenIgnore;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  */
 
 @DataObject(generateConverter = true, publicConverter = false)
-public class HttpFormsSettings {
+public class FormsMockAdapterDefinition {
 
   private String path;
   private String domain;
@@ -44,7 +44,7 @@ public class HttpFormsSettings {
   /**
    * Default constructor
    */
-  public HttpFormsSettings() {
+  public FormsMockAdapterDefinition() {
     //empty constructor
   }
 
@@ -54,8 +54,8 @@ public class HttpFormsSettings {
    *
    * @param other the instance to copy
    */
-  public HttpFormsSettings(
-      HttpFormsSettings other) {
+  public FormsMockAdapterDefinition(
+      FormsMockAdapterDefinition other) {
     this.path = other.path;
     this.domain = other.domain;
     this.port = other.port;
@@ -70,9 +70,9 @@ public class HttpFormsSettings {
    *
    * @param json the JSON
    */
-  public HttpFormsSettings(JsonObject json) {
+  public FormsMockAdapterDefinition(JsonObject json) {
     this();
-    HttpFormsSettingsConverter.fromJson(json, this);
+    FormsMockAdapterDefinitionConverter.fromJson(json, this);
     if (allowedRequestHeaders != null) {
       allowedRequestHeadersPatterns = allowedRequestHeaders.stream()
           .map(expr -> Pattern.compile(expr)).collect(Collectors.toList());
@@ -86,7 +86,7 @@ public class HttpFormsSettings {
    */
   public JsonObject toJson() {
     JsonObject json = new JsonObject();
-    HttpFormsSettingsConverter.toJson(this, json);
+    FormsMockAdapterDefinitionConverter.toJson(this, json);
     return json;
   }
 
@@ -94,7 +94,7 @@ public class HttpFormsSettings {
     return path;
   }
 
-  public HttpFormsSettings setPath(String path) {
+  public FormsMockAdapterDefinition setPath(String path) {
     this.path = path;
     return this;
   }
@@ -111,7 +111,7 @@ public class HttpFormsSettings {
    *
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsSettings setDomain(
+  public FormsMockAdapterDefinition setDomain(
       String domain) {
     this.domain = domain;
     return this;
@@ -130,7 +130,7 @@ public class HttpFormsSettings {
    * @param port - HTTP port
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsSettings setPort(int port) {
+  public FormsMockAdapterDefinition setPort(int port) {
     this.port = port;
     return this;
   }
@@ -149,7 +149,7 @@ public class HttpFormsSettings {
    * @param allowedRequestHeaders set of Strings with header names
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsSettings setAllowedRequestHeaders(
+  public FormsMockAdapterDefinition setAllowedRequestHeaders(
       Set<String> allowedRequestHeaders) {
     this.allowedRequestHeaders = allowedRequestHeaders;
     allowedRequestHeadersPatterns = allowedRequestHeaders.stream()
@@ -169,7 +169,7 @@ public class HttpFormsSettings {
    *
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsSettings setQueryParams(
+  public FormsMockAdapterDefinition setQueryParams(
       JsonObject queryParams) {
     this.queryParams = queryParams;
     return this;
@@ -187,7 +187,7 @@ public class HttpFormsSettings {
    *
    * @return a reference to this, so the API can be used fluently
    */
-  public HttpFormsSettings setAdditionalHeaders(
+  public FormsMockAdapterDefinition setAdditionalHeaders(
       JsonObject additionalHeaders) {
     this.additionalHeaders = additionalHeaders;
     return this;
@@ -199,7 +199,7 @@ public class HttpFormsSettings {
   }
 
   @GenIgnore
-  public HttpFormsSettings setAllowedRequestHeaderPatterns(
+  public FormsMockAdapterDefinition setAllowedRequestHeaderPatterns(
       List<Pattern> allowedRequestHeaderPatterns) {
     this.allowedRequestHeadersPatterns = allowedRequestHeaderPatterns;
     return this;

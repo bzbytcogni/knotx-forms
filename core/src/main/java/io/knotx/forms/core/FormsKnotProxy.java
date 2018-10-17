@@ -109,7 +109,7 @@ public class FormsKnotProxy extends AbstractKnotProxy {
 
   private FormsAdapterRequest prepareAdapterRequest(KnotContext knotContext,
       FormEntity formEntity) {
-    FormsDefinition metadata = formEntity.adapter();
+    FormsKnotDefinition metadata = formEntity.adapter();
     ClientRequest request = new ClientRequest().setPath(knotContext.getClientRequest().getPath())
         .setMethod(knotContext.getClientRequest().getMethod())
         .setFormAttributes(knotContext.getClientRequest().getFormAttributes())

@@ -19,7 +19,7 @@ import io.knotx.dataobjects.Fragment;
 import io.knotx.dataobjects.KnotContext;
 import io.knotx.exceptions.ConfigurationException;
 import io.knotx.forms.core.FormsKnotOptions;
-import io.knotx.forms.core.FormsDefinition;
+import io.knotx.forms.core.FormsKnotDefinition;
 import io.knotx.fragments.FragmentContentExtractor;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -41,7 +41,7 @@ public class FormEntity {
 
   private String identifier;
 
-  private FormsDefinition adapter;
+  private FormsKnotDefinition adapter;
 
   private JsonObject adapterParams;
 
@@ -66,7 +66,7 @@ public class FormEntity {
     return identifier;
   }
 
-  public FormsDefinition adapter() {
+  public FormsKnotDefinition adapter() {
     return adapter;
   }
 
@@ -100,7 +100,7 @@ public class FormEntity {
     return this;
   }
 
-  private FormEntity adapter(FormsDefinition adapterMetadata) {
+  private FormEntity adapter(FormsKnotDefinition adapterMetadata) {
     this.adapter = adapterMetadata;
     return this;
   }
@@ -146,7 +146,7 @@ public class FormEntity {
         .orElse(null);
   }
 
-  private static FormsDefinition getAdapterMetadata(FormsKnotOptions options,
+  private static FormsKnotDefinition getAdapterMetadata(FormsKnotOptions options,
       String adapter) {
     return options.getAdapters().stream()
         .filter(metadata -> metadata.getName().equals(adapter))
