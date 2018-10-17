@@ -56,6 +56,7 @@ subprojects { subproject ->
     compileOnly 'io.vertx:vertx-service-proxy'
     compileOnly 'io.vertx:vertx-rx-java2'
     compileOnly 'io.vertx:vertx-codegen'
+    compileOnly "io.vertx:vertx-web-client"
 
     // Test dependencies
     testCompile 'io.knotx:knotx-core'
