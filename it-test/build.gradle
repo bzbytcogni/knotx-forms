@@ -30,7 +30,10 @@ dependencies {
 sourceSets {
   test {
     resources {
-      srcDirs += ['../conf']
+      srcDirs += [
+          '../conf',
+          project(':knotx-forms-core').sourceSets.test.resources
+      ]
     }
   }
 }

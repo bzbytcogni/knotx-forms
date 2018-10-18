@@ -68,7 +68,7 @@ public class FormsIntegrationTest {
       VertxTestContext context, Vertx vertx)
       throws IOException, URISyntaxException {
 
-    callWithAssertions(context, vertx, "template-engine/one-snippet-fragment/fragment1.txt",
+    callWithAssertions(context, vertx, "fragment_form_self_in.txt",
         knotContext -> {
           Assertions.assertTrue(
               knotContext.getFragments().iterator().next().context().containsKey("_result"));
