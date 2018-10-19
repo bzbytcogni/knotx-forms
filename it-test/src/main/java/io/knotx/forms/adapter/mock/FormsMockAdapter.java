@@ -50,7 +50,7 @@ public class FormsMockAdapter extends AbstractVerticle {
     serviceBinder = new ServiceBinder(getVertx());
     consumer = serviceBinder
         .setAddress(configuration.getAddress())
-        .register(FormsAdapterProxy.class, new FormsMockAdapterProxy(vertx, configuration));
+        .register(FormsAdapterProxy.class, new FormsMockAdapterProxy());
   }
 
   @Override

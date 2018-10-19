@@ -20,46 +20,20 @@ import io.knotx.dataobjects.ClientResponse;
 import io.knotx.forms.api.FormsAdapterRequest;
 import io.knotx.forms.api.FormsAdapterResponse;
 import io.knotx.forms.api.reactivex.AbstractFormsAdapterProxy;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.reactivex.Single;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.reactivex.core.Vertx;
 
 public class FormsMockAdapterProxy extends AbstractFormsAdapterProxy {
 
-//  private HttpClientFacade httpClientFacade;
-
-  public FormsMockAdapterProxy(Vertx vertx, FormsMockAdapterOptions configuration) {
-//    this.httpClientFacade = new HttpClientFacade(
-//        WebClient.create(vertx, configuration.getClientOptions()),
-//        configuration);
-  }
+  private static final String MOCK_RESPONSE = "{\"mock\": true}";
 
   @Override
   protected Single<FormsAdapterResponse> processRequest(FormsAdapterRequest request) {
-//    return httpClientFacade.process(request, HttpMethod.POST).map(this::prepareResponse);
-    return Single.just(new FormsAdapterResponse());
-
-  }
-
-  private FormsAdapterResponse prepareResponse(ClientResponse response) {
-    FormsAdapterResponse result = new FormsAdapterResponse();
-
-    if (response.getStatusCode() == HttpResponseStatus.OK.code()) {
-      if (isJsonBody(response.getBody()) && response.getBody().toJsonObject()
-          .containsKey("validationErrors")) {
-        result.setSignal("error");
-      } else {
-        result.setSignal("success");
-      }
-    }
-    result.setResponse(response);
-
-    return result;
-  }
-
-  private boolean isJsonBody(Buffer bodyBuffer) {
-    String body = bodyBuffer.toString().trim();
-    return body.charAt(0) == '{' && body.charAt(body.length() - 1) == '}';
+    return Single.just(
+        new FormsAdapterResponse()
+            .setSignal("success")
+            .setResponse(
+                new ClientResponse().setStatusCode(200).setBody(Buffer.buffer(MOCK_RESPONSE)))
+    );
   }
 }
