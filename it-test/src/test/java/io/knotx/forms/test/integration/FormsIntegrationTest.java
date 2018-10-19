@@ -58,10 +58,10 @@ public class FormsIntegrationTest {
         knotContext -> {
           JsonObject context = knotContext.getFragments().iterator().next().context();
 
-          Assertions.assertTrue(context.containsKey("action"));
-          Assertions.assertTrue(context.getJsonObject("action").containsKey("_result"));
+          Assertions.assertTrue(context.containsKey("forms"));
+          Assertions.assertTrue(context.getJsonObject("forms").containsKey("_result"));
           Assertions.assertTrue(
-              context.getJsonObject("action").getJsonObject("_result").containsKey("mock"));
+              context.getJsonObject("forms").getJsonObject("_result").containsKey("mock"));
         });
   }
 
