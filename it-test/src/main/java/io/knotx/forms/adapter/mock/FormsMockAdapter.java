@@ -30,8 +30,6 @@ public class FormsMockAdapter extends AbstractVerticle {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FormsMockAdapter.class);
 
-  private FormsMockAdapterOptions configuration;
-
   private MessageConsumer<JsonObject> consumer;
 
   private ServiceBinder serviceBinder;
@@ -39,7 +37,6 @@ public class FormsMockAdapter extends AbstractVerticle {
   @Override
   public void init(Vertx vertx, Context context) {
     super.init(vertx, context);
-    this.configuration = new FormsMockAdapterOptions(config());
   }
 
   @Override
@@ -48,7 +45,7 @@ public class FormsMockAdapter extends AbstractVerticle {
 
     serviceBinder = new ServiceBinder(getVertx());
     consumer = serviceBinder
-        .setAddress(configuration.getAddress())
+        .setAddress(config().getString("address"))
         .register(FormsAdapterProxy.class, new FormsMockAdapterProxy());
   }
 
