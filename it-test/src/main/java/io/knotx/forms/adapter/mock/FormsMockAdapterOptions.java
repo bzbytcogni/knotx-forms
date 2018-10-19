@@ -15,12 +15,8 @@
  */
 package io.knotx.forms.adapter.mock;
 
-import io.knotx.configuration.CustomHttpHeader;
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.client.WebClientOptions;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Options describing how an ServiceAdapter will make connections with external HTTP services.
@@ -35,9 +31,6 @@ public class FormsMockAdapterOptions {
   public final static String DEFAULT_ADDRESS = "knotx.forms.http";
 
   private String address;
-  private WebClientOptions clientOptions;
-  private List<FormsMockAdapterDefinition> services;
-  private CustomHttpHeader customHttpHeader;
 
   /**
    * Default constructor
@@ -55,9 +48,6 @@ public class FormsMockAdapterOptions {
   public FormsMockAdapterOptions(
       FormsMockAdapterOptions other) {
     this.address = other.address;
-    this.clientOptions = new WebClientOptions(other.clientOptions);
-    this.services = new ArrayList<>(other.services);
-    this.customHttpHeader = new CustomHttpHeader(other.customHttpHeader);
   }
 
   /**
@@ -83,9 +73,6 @@ public class FormsMockAdapterOptions {
 
   private void init() {
     address = DEFAULT_ADDRESS;
-    clientOptions = new WebClientOptions();
-    services = new ArrayList<>();
-    customHttpHeader = null;
   }
 
   /**
@@ -108,64 +95,4 @@ public class FormsMockAdapterOptions {
     return this;
   }
 
-  /**
-   * @return {@link WebClientOptions} of the Http Client used bv the ServiceAdapter to communicate
-   * with external services.
-   */
-  public WebClientOptions getClientOptions() {
-    return clientOptions;
-  }
-
-  /**
-   * Sets the Vert.x Web Client options of the Web client.
-   *
-   * @param clientOptions clientOptions
-   * @return a reference to this, so the API can be used fluently
-   */
-  public FormsMockAdapterOptions setClientOptions(
-      WebClientOptions clientOptions) {
-    this.clientOptions = clientOptions;
-    return this;
-  }
-
-  /**
-   * @return a list of {@link FormsMockAdapterDefinition} describing all service endpoints the
-   * ServiceAdapter need to communicate
-   */
-  public List<FormsMockAdapterDefinition> getServices() {
-    return services;
-  }
-
-  /**
-   * Sets the configuration of each service endpoint used by the adapter.
-   *
-   * @param services the {@link FormsMockAdapterDefinition} objects representing each service
-   * endpoint
-   * @return a reference to this, so the API can be used fluently
-   */
-  public FormsMockAdapterOptions setServices(
-      List<FormsMockAdapterDefinition> services) {
-    this.services = services;
-    return this;
-  }
-
-  /**
-   * @return a Custom Header to be sent in every request to the services
-   */
-  public CustomHttpHeader getCustomHttpHeader() {
-    return customHttpHeader;
-  }
-
-  /**
-   * Sets the header (name &amp; value) to be sent in every request to the services. If not set, it
-   * sends {@code Server-User-Agent=Knot.x} header
-   *
-   * @param customHttpHeader the header name &amp; value
-   * @return a reference to this, so the API can be used fluently
-   */
-  public FormsMockAdapterOptions setCustomHttpHeader(
-      CustomHttpHeader customHttpHeader) {
-    this.customHttpHeader = customHttpHeader;
-    return this;
-  }
 }

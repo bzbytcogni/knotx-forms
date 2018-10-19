@@ -46,7 +46,6 @@ public class FormsMockAdapter extends AbstractVerticle {
   public void start() throws Exception {
     LOGGER.info("Starting <{}>", this.getClass().getSimpleName());
 
-    //register the service proxy on event bus
     serviceBinder = new ServiceBinder(getVertx());
     consumer = serviceBinder
         .setAddress(configuration.getAddress())
