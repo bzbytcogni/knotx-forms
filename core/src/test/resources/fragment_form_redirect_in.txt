@@ -1,5 +1,5 @@
 <script data-knotx-knots="form-someId123" type="text/knotx-snippet">
-    <form data-knotx-action="action-redirect" data-knotx-on-step2="/content/form/step2.html">
+    <form data-knotx-forms-adapter="action-redirect" data-knotx-forms-on-step2="/content/form/step2.html">
         {{someValue}}
         <div class="form-group">
             <label for="email2">Email</label>
