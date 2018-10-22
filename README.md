@@ -75,7 +75,8 @@ Signal is basically a decision about further request processing. Value of the si
 In other words, the page processing will be delegated to next Knot in the graph.
 
 ## How to configure?
-For all configuration fields and their defaults consult FormsKnotOptions
+For all configuration fields and their defaults consult FormsKnotOptions. 
+In folder `conf` there are also example configuration files for FormsKnot.
 
 In short, by default, server:
 - Listens on event bus address `knotx.knot.forms` on messages to process
