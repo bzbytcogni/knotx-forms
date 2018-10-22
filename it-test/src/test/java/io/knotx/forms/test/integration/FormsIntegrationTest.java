@@ -78,7 +78,12 @@ public class FormsIntegrationTest {
     KnotContext message = payloadMessage("fragment_form_self_in.txt");
     message.getClientRequest().setMethod(HttpMethod.GET);
 
-    rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
+    rxProcessWithAssertions(vertxTestContext, vertx, message,
+        knotContext -> {
+          Assertions.assertEquals(
+              getFragmentFromResources("fragment_form_self_out.txt").replaceAll("\\s",""),
+              knotContext.getFragments().iterator().next().content().replaceAll("\\s",""));
+        });
   }
 
   private void rxProcessWithAssertions(VertxTestContext context, Vertx vertx, KnotContext payload,
@@ -89,6 +94,11 @@ public class FormsIntegrationTest {
     subscribeToResult_shouldSucceed(context, knotContextSingle, onSuccess);
   }
 
+  private String getFragmentFromResources(String fragmentPath) throws IOException, URISyntaxException {
+    return new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
+        .getResource(fragmentPath).toURI())));
+  }
+
   private KnotContext payloadMessage(String fragmentPath) throws IOException, URISyntaxException {
     ClientRequest clientRequest = new ClientRequest()
         .setFormAttributes(MultiMap.caseInsensitiveMultiMap()
@@ -96,8 +106,7 @@ public class FormsIntegrationTest {
 
     ClientResponse clientResponse = new ClientResponse().setStatusCode(200);
 
-    String fragmentContent = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
-        .getResource(fragmentPath).toURI())));
+    String fragmentContent = getFragmentFromResources(fragmentPath);
 
     List<Fragment> fragments = Collections.singletonList(
         Fragment.snippet(Collections.singletonList("form-" + FORM_NAME), fragmentContent));
