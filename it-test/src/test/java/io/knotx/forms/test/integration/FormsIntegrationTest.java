@@ -53,8 +53,9 @@ public class FormsIntegrationTest {
   public void callForms_validKnotContextResult(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
+    KnotContext message = payloadMessage("fragment_form_self_in.txt");
 
-    callWithAssertions(vertxTestContext, vertx, "fragment_form_self_in.txt",
+    rxProcessWithAssertions(vertxTestContext, vertx, message,
         knotContext -> {
           JsonObject context = knotContext.getFragments().iterator().next().context();
 
@@ -65,16 +66,8 @@ public class FormsIntegrationTest {
         });
   }
 
-  private void callWithAssertions(
-      VertxTestContext context, Vertx vertx, String fragmentPath,
-      Consumer<KnotContext> onSuccess) throws IOException, URISyntaxException {
-    KnotContext message = payloadMessage(fragmentPath);
-
-    rxProcessWithAssertions(context, vertx, onSuccess, message);
-  }
-
-  private void rxProcessWithAssertions(VertxTestContext context, Vertx vertx,
-      Consumer<KnotContext> onSuccess, KnotContext payload) {
+  private void rxProcessWithAssertions(VertxTestContext context, Vertx vertx, KnotContext payload,
+      Consumer<KnotContext> onSuccess) {
     KnotProxy service = KnotProxy.createProxy(vertx, CORE_MODULE_EB_ADDRESS);
     Single<KnotContext> knotContextSingle = service.rxProcess(payload);
 
