@@ -26,7 +26,7 @@ public class FormConstants {
   static final String FORM_ADAPTER_ATTR = "data-knotx-forms-adapter";
   static final String FORM_ADAPTER_PARAMS = "data-knotx-forms-adapter-params";
 
-  static final String ACTION_FORM_ATTRIBUTES_PATTERN = "data-knotx-.*";
+  static final String FORM_ATTRIBUTES_PATTERN = "data-knotx-.*";
 
   private FormConstants() {
     // hidden

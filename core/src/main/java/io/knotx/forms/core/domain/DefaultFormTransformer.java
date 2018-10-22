@@ -34,18 +34,18 @@ public class DefaultFormTransformer implements FormTransformer {
   @Override
   public String transform(String content, String formIdAttrName, String formIdAttrValue) {
     Element scriptContentDocument = FragmentContentExtractor.unwrapContent(content);
-    Element actionFormElement = scriptContentDocument.getElementsByAttribute(
+    Element formsElement = scriptContentDocument.getElementsByAttribute(
         FormConstants.FORM_ADAPTER_ATTR).first();
 
     LOGGER.debug("Changing form with identifier [{}]", formIdAttrValue);
-    addHiddenInputTag(actionFormElement, formIdAttrName, formIdAttrValue);
-    clearFromActionAttributes(actionFormElement);
+    addHiddenInputTag(formsElement, formIdAttrName, formIdAttrValue);
+    clearFromsAttributes(formsElement);
     return getFragmentContent(content, scriptContentDocument);
   }
 
-  private void clearFromActionAttributes(Element item) {
+  private void clearFromsAttributes(Element item) {
     item.attributes().asList().stream()
-        .filter(attr -> attr.getKey().matches(FormConstants.ACTION_FORM_ATTRIBUTES_PATTERN))
+        .filter(attr -> attr.getKey().matches(FormConstants.FORM_ATTRIBUTES_PATTERN))
         .forEach(attr -> item.removeAttr(attr.getKey()));
   }
 

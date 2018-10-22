@@ -68,7 +68,7 @@ public class FormsKnotProxy extends AbstractKnotProxy {
             return Single.just(handleGetMethod(forms, knotContext));
           } else {
             FormEntity current = currentForm(forms, knotContext);
-            return callActionAdapter(knotContext, current)
+            return callFormsAdapter(knotContext, current)
                 .map(response -> processAdapterResponse(knotContext, forms, current, response));
           }
         })
@@ -98,7 +98,7 @@ public class FormsKnotProxy extends AbstractKnotProxy {
     return knotContext;
   }
 
-  private Single<FormsAdapterResponse> callActionAdapter(KnotContext knotContext,
+  private Single<FormsAdapterResponse> callFormsAdapter(KnotContext knotContext,
       FormEntity current) {
     LOGGER.trace("Process form for {} ", knotContext);
     FormsAdapterProxy adapter = FormsAdapterProxy
@@ -142,11 +142,11 @@ public class FormsKnotProxy extends AbstractKnotProxy {
   private KnotContext routeToNextKnotResponse(ClientResponse clientResponse,
       KnotContext knotContext, List<FormEntity> forms, FormEntity form) {
     LOGGER.debug("Request next transition to [{}]", DEFAULT_TRANSITION);
-    JsonObject actionContext = new JsonObject()
+    JsonObject formsContext = new JsonObject()
         .put("_result", new JsonObject(clientResponse.getBody().toString()))
         .put("_response", clientResponse.toMetadataJson());
 
-    form.fragment().context().put("action", actionContext);
+    form.fragment().context().put("forms", formsContext);
     knotContext.getClientResponse()
         .setHeaders(getFilteredHeaders(clientResponse.getHeaders(),
             form.adapter().getAllowedResponseHeadersPatterns())
