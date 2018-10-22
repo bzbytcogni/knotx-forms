@@ -26,6 +26,7 @@ import io.knotx.junit5.KnotxExtension;
 import io.knotx.reactivex.proxy.KnotProxy;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.junit5.VertxTestContext;
 import io.vertx.reactivex.core.MultiMap;
@@ -55,15 +56,29 @@ public class FormsIntegrationTest {
       throws IOException, URISyntaxException {
     KnotContext message = payloadMessage("fragment_form_self_in.txt");
 
-    rxProcessWithAssertions(vertxTestContext, vertx, message,
-        knotContext -> {
-          JsonObject context = knotContext.getFragments().iterator().next().context();
+    rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
+  }
 
-          Assertions.assertTrue(context.containsKey("forms"));
-          Assertions.assertTrue(context.getJsonObject("forms").containsKey("_result"));
-          Assertions.assertTrue(
-              context.getJsonObject("forms").getJsonObject("_result").containsKey("mock"));
-        });
+  @Test
+  @KnotxApplyConfiguration("formsStack_POST.conf")
+  public void callPostForms_validKnotContextResult(
+      VertxTestContext vertxTestContext, Vertx vertx)
+      throws IOException, URISyntaxException {
+    KnotContext message = payloadMessage("fragment_form_self_in.txt");
+    message.getClientRequest().setMethod(HttpMethod.POST);
+
+    rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
+  }
+
+  @Test
+  @KnotxApplyConfiguration("formsStack_GET.conf")
+  public void callGetForms_validResult(
+      VertxTestContext vertxTestContext, Vertx vertx)
+      throws IOException, URISyntaxException {
+    KnotContext message = payloadMessage("fragment_form_self_in.txt");
+    message.getClientRequest().setMethod(HttpMethod.GET);
+
+    rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
   }
 
   private void rxProcessWithAssertions(VertxTestContext context, Vertx vertx, KnotContext payload,
@@ -91,6 +106,15 @@ public class FormsIntegrationTest {
         .setClientRequest(clientRequest)
         .setClientResponse(clientResponse)
         .setFragments(fragments);
+  }
+
+  private void assertValidFormsContext(KnotContext knotContext) {
+    JsonObject context = knotContext.getFragments().iterator().next().context();
+
+    Assertions.assertTrue(context.containsKey("forms"));
+    Assertions.assertTrue(context.getJsonObject("forms").containsKey("_result"));
+    Assertions.assertTrue(
+        context.getJsonObject("forms").getJsonObject("_result").containsKey("mock"));
   }
 
 }

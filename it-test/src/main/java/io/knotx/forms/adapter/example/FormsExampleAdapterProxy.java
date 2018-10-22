@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.knotx.forms.adapter.mock;
+package io.knotx.forms.adapter.example;
 
 
 import io.knotx.dataobjects.ClientResponse;
@@ -23,9 +23,15 @@ import io.knotx.forms.api.reactivex.AbstractFormsAdapterProxy;
 import io.reactivex.Single;
 import io.vertx.core.buffer.Buffer;
 
-public class FormsMockAdapterProxy extends AbstractFormsAdapterProxy {
+public class FormsExampleAdapterProxy extends AbstractFormsAdapterProxy {
 
   private static final String MOCK_RESPONSE = "{\"mock\": true}";
+
+  private String testStartegy;
+
+  public FormsExampleAdapterProxy(String testStrategy) {
+    this.testStartegy = testStrategy;
+  }
 
   @Override
   protected Single<FormsAdapterResponse> processRequest(FormsAdapterRequest request) {

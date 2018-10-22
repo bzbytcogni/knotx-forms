@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.knotx.forms.adapter.mock;
+package io.knotx.forms.adapter.example;
 
 
 import io.knotx.forms.api.FormsAdapterProxy;
@@ -26,9 +26,9 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.serviceproxy.ServiceBinder;
 
-public class FormsMockAdapter extends AbstractVerticle {
+public class FormsExampleAdapter extends AbstractVerticle {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(FormsMockAdapter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(FormsExampleAdapter.class);
 
   private MessageConsumer<JsonObject> consumer;
 
@@ -46,7 +46,8 @@ public class FormsMockAdapter extends AbstractVerticle {
     serviceBinder = new ServiceBinder(getVertx());
     consumer = serviceBinder
         .setAddress(config().getString("address"))
-        .register(FormsAdapterProxy.class, new FormsMockAdapterProxy());
+        .register(FormsAdapterProxy.class, new FormsExampleAdapterProxy(
+            config().getString("testStrategy")));
   }
 
   @Override
