@@ -41,7 +41,7 @@ This is how form looks in the repository:
   <p class="bg-danger">Email address does not exists</p>
   {{/if}}
   <p>Please provide your email address</p>
-  <form data-knotx-forms-adapter="step1" data-knotx-forms-on-success="/content/local/login/step2.html" data-knotx-forms-on-error="_self" data-knotx-forms-adapter-params='{"myKey":"myValue"}' method="post">
+  <form data-knotx-forms-adapter-name="step1" data-knotx-forms-on-success="/content/local/login/step2.html" data-knotx-forms-on-error="_self" data-knotx-forms-adapter-name-params='{"myKey":"myValue"}' method="post">
     <input type="email" name="email" value="{{#if action._result.validationError}} {{action._result.form.email}} {{/if}}" />
     <input type="submit" value="Submit"/>
   </form>
@@ -57,7 +57,7 @@ is automatically added by Forms Knot and is used to distinguish a requested form
 attribute - it retrieve a `{NAME}` value from `data-knotx-knots="form-{NAME}"`.
 
 Following data attributes are available in the `<form>` tag with described purpose:
-- `data-knotx-forms-adapter` - this is a name of an Forms Adapter that will be used to handle submitted data.
+- `data-knotx-forms-adapter-name` - this is a name of an Forms Adapter that will be used to handle submitted data.
 It is similar concept as `data-knotx-databridge-{NAME}` in [Data Bridge](https://github.com/Knotx/knotx-data-bridge). In the example,
 Forms Handler registered under name `step1` will handle this form data submission.
 - `data-knotx-forms-on-{SIGNAL}` - name of a [Signal](#Signal) that should be applied. In the example

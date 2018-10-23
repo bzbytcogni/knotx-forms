@@ -15,6 +15,7 @@
  */
 package io.knotx.forms.test.integration;
 
+import static io.knotx.forms.api.FormFragmentConstants.FRAGMENT_FORM_CONTEXT;
 import static io.knotx.junit5.util.RequestUtil.subscribeToResult_shouldSucceed;
 
 import io.knotx.dataobjects.ClientRequest;
@@ -121,10 +122,10 @@ public class FormsIntegrationTest {
   private void assertValidFormsContext(KnotContext knotContext) {
     JsonObject context = knotContext.getFragments().iterator().next().context();
 
-    Assertions.assertTrue(context.containsKey("forms"));
-    Assertions.assertTrue(context.getJsonObject("forms").containsKey("_result"));
+    Assertions.assertTrue(context.containsKey(FRAGMENT_FORM_CONTEXT));
+    Assertions.assertTrue(context.getJsonObject(FRAGMENT_FORM_CONTEXT).containsKey("_result"));
     Assertions.assertTrue(
-        context.getJsonObject("forms").getJsonObject("_result").containsKey("mock"));
+        context.getJsonObject(FRAGMENT_FORM_CONTEXT).getJsonObject("_result").containsKey("mock"));
   }
 
 }

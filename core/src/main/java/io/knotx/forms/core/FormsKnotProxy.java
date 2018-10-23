@@ -15,6 +15,8 @@
  */
 package io.knotx.forms.core;
 
+import static io.knotx.forms.api.FormFragmentConstants.FRAGMENT_FORM_CONTEXT;
+
 import io.knotx.dataobjects.ClientRequest;
 import io.knotx.dataobjects.ClientResponse;
 import io.knotx.dataobjects.KnotContext;
@@ -142,11 +144,11 @@ public class FormsKnotProxy extends AbstractKnotProxy {
   private KnotContext routeToNextKnotResponse(ClientResponse clientResponse,
       KnotContext knotContext, List<FormEntity> forms, FormEntity form) {
     LOGGER.debug("Request next transition to [{}]", DEFAULT_TRANSITION);
-    JsonObject formsContext = new JsonObject()
+    JsonObject formContext = new JsonObject()
         .put("_result", new JsonObject(clientResponse.getBody().toString()))
         .put("_response", clientResponse.toMetadataJson());
 
-    form.fragment().context().put("forms", formsContext);
+    form.fragment().context().put(FRAGMENT_FORM_CONTEXT, formContext);
     knotContext.getClientResponse()
         .setHeaders(getFilteredHeaders(clientResponse.getHeaders(),
             form.adapter().getAllowedResponseHeadersPatterns())
