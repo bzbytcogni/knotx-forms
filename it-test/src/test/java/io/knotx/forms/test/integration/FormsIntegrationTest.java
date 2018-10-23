@@ -81,8 +81,8 @@ public class FormsIntegrationTest {
     rxProcessWithAssertions(vertxTestContext, vertx, message,
         knotContext -> {
           Assertions.assertEquals(
-              getFragmentFromResources("fragment_form_self_out.txt").replaceAll("\\s",""),
-              knotContext.getFragments().iterator().next().content().replaceAll("\\s",""));
+              getFragmentFromResources("fragment_form_self_out.txt").replaceAll("\\s", ""),
+              knotContext.getFragments().iterator().next().content().replaceAll("\\s", ""));
         });
   }
 
@@ -94,7 +94,8 @@ public class FormsIntegrationTest {
     subscribeToResult_shouldSucceed(context, knotContextSingle, onSuccess);
   }
 
-  private String getFragmentFromResources(String fragmentPath) throws IOException, URISyntaxException {
+  private String getFragmentFromResources(String fragmentPath)
+      throws IOException, URISyntaxException {
     return new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
         .getResource(fragmentPath).toURI())));
   }
