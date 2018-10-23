@@ -60,7 +60,7 @@ public class FormsIntegrationTest {
   }
 
   @Test
-  @KnotxApplyConfiguration("formsStack_POST.conf")
+  @KnotxApplyConfiguration({"formsStack.conf", "adapterGet.conf"})
   public void callPostForms_validKnotContextResult(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
@@ -71,7 +71,7 @@ public class FormsIntegrationTest {
   }
 
   @Test
-  @KnotxApplyConfiguration("formsStack_GET.conf")
+  @KnotxApplyConfiguration({"formsStack.conf", "adapterPost.conf"})
   public void callGetForms_validResult(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
