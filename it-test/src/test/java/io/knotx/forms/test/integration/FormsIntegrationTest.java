@@ -50,30 +50,22 @@ public class FormsIntegrationTest {
   private final static String CORE_MODULE_EB_ADDRESS = "knotx.knot.forms";
   private final static String FORM_NAME = "someId456";
 
-  @Test
-  @KnotxApplyConfiguration("formsStack.conf")
-  public void callForms_validKnotContextResult(
-      VertxTestContext vertxTestContext, Vertx vertx)
-      throws IOException, URISyntaxException {
-    KnotContext message = payloadMessage("fragment_form_self_in.html");
-
-    rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
-  }
 
   @Test
-  @KnotxApplyConfiguration({"formsStack.conf", "adapterGet.conf"})
+  @KnotxApplyConfiguration({"formsStack.conf", "adapterPost.conf"})
   public void callPostForms_validKnotContextResult(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
     KnotContext message = payloadMessage("fragment_form_self_in.html");
     message.getClientRequest().setMethod(HttpMethod.POST);
 
-    rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
+    rxProcessWithAssertions(vertxTestContext, vertx, message,
+        this::assertValidFormsContextAfterPostRequest);
   }
 
   @Test
-  @KnotxApplyConfiguration({"formsStack.conf", "adapterPost.conf"})
-  public void callGetForms_validResult(
+  @KnotxApplyConfiguration({"formsStack.conf"})
+  public void callGetForms_validFragmentTransform(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
     KnotContext message = payloadMessage("fragment_form_self_in.html");
@@ -119,13 +111,16 @@ public class FormsIntegrationTest {
         .setFragments(fragments);
   }
 
-  private void assertValidFormsContext(KnotContext knotContext) {
+  private void assertValidFormsContextAfterPostRequest(KnotContext knotContext) {
     JsonObject context = knotContext.getFragments().iterator().next().context();
 
     Assertions.assertTrue(context.containsKey(FRAGMENT_FORM_CONTEXT));
     Assertions.assertTrue(context.getJsonObject(FRAGMENT_FORM_CONTEXT).containsKey("_result"));
-    Assertions.assertTrue(
-        context.getJsonObject(FRAGMENT_FORM_CONTEXT).getJsonObject("_result").containsKey("mock"));
-  }
 
+    JsonObject result = context.getJsonObject(FRAGMENT_FORM_CONTEXT).getJsonObject("_result");
+
+    Assertions.assertTrue(result.containsKey("mock"));
+    Assertions.assertTrue(result.containsKey("testStrategy"));
+    Assertions.assertEquals(result.getString("testStrategy"), "POST_REQUEST");
+  }
 }

@@ -21,25 +21,28 @@ import io.knotx.forms.api.FormsAdapterRequest;
 import io.knotx.forms.api.FormsAdapterResponse;
 import io.knotx.forms.api.reactivex.AbstractFormsAdapterProxy;
 import io.reactivex.Single;
-import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonObject;
 
 public class FormsExampleAdapterProxy extends AbstractFormsAdapterProxy {
 
   private static final String MOCK_RESPONSE = "{\"mock\": true}";
 
-  private String testStartegy;
+  private String testStrategy;
 
   public FormsExampleAdapterProxy(String testStrategy) {
-    this.testStartegy = testStrategy;
+    this.testStrategy = testStrategy;
   }
 
   @Override
   protected Single<FormsAdapterResponse> processRequest(FormsAdapterRequest request) {
+    JsonObject response = new JsonObject(MOCK_RESPONSE)
+        .put("testStrategy", testStrategy);
+
     return Single.just(
         new FormsAdapterResponse()
             .setSignal("success")
             .setResponse(
-                new ClientResponse().setStatusCode(200).setBody(Buffer.buffer(MOCK_RESPONSE)))
-    );
+                new ClientResponse().setStatusCode(200).setBody(response.toBuffer())));
+
   }
 }
