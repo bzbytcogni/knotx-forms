@@ -15,18 +15,25 @@
  */
 description = "Knot.x Forms Integration Tests"
 
+compileJava.dependsOn annotationProcessing
+
 dependencies {
-  compile project(':knotx-forms-core')
+  compileOnly project(':knotx-forms-api')
+  compileOnly project(':knotx-forms-core')
+  compileOnly "io.vertx:vertx-web-client"
 
-  compile "io.vertx:vertx-web-client"
-
-  testCompile project(path: ':knotx-forms-core', configuration: 'testResources')
+  testCompile project(':knotx-forms-api')
+  testCompile project(':knotx-forms-core')
+  testCompile "io.vertx:vertx-web-client"
 }
 
 sourceSets {
   test {
     resources {
-      srcDirs = ['../conf']
+      srcDirs += [
+          '../conf',
+          project(':knotx-forms-core').sourceSets.test.resources
+      ]
     }
   }
 }

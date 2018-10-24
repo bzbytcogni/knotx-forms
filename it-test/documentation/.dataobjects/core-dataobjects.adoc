@@ -1,0 +1,18 @@
+[[FormsMockAdapterOptions]]
+== FormsMockAdapterOptions
+
+++++
+ Options describing how an ServiceAdapter will make connections with external HTTP services.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[address]]`address`|`String`|
++++
+Event Bus <code>address</code> the service adapter listening on. Default value is
+ 'knotx.adapter.service.http'
++++
+|===
