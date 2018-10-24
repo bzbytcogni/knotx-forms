@@ -55,7 +55,7 @@ public class FormsIntegrationTest {
   public void callForms_validKnotContextResult(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
-    KnotContext message = payloadMessage("fragment_form_self_in.txt");
+    KnotContext message = payloadMessage("fragment_form_self_in.html");
 
     rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
   }
@@ -65,7 +65,7 @@ public class FormsIntegrationTest {
   public void callPostForms_validKnotContextResult(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
-    KnotContext message = payloadMessage("fragment_form_self_in.txt");
+    KnotContext message = payloadMessage("fragment_form_self_in.html");
     message.getClientRequest().setMethod(HttpMethod.POST);
 
     rxProcessWithAssertions(vertxTestContext, vertx, message, this::assertValidFormsContext);
@@ -76,13 +76,13 @@ public class FormsIntegrationTest {
   public void callGetForms_validResult(
       VertxTestContext vertxTestContext, Vertx vertx)
       throws IOException, URISyntaxException {
-    KnotContext message = payloadMessage("fragment_form_self_in.txt");
+    KnotContext message = payloadMessage("fragment_form_self_in.html");
     message.getClientRequest().setMethod(HttpMethod.GET);
 
     rxProcessWithAssertions(vertxTestContext, vertx, message,
         knotContext -> {
           Assertions.assertEquals(
-              getFragmentFromResources("fragment_form_self_out.txt").replaceAll("\\s", ""),
+              getFragmentFromResources("fragment_form_self_out.html").replaceAll("\\s", ""),
               knotContext.getFragments().iterator().next().content().replaceAll("\\s", ""));
         });
   }
