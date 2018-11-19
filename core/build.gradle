@@ -17,15 +17,10 @@ description = "Knot.x Forms Core"
 
 compileJava.dependsOn annotationProcessing
 
-configurations {
-    testResources
-}
-
 dependencies {
     compileOnly project(':knotx-forms-api')
-    testCompileOnly project(':knotx-forms-api')
-    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.4.1-SNAPSHOT', classifier: 'tests'
-    testResources sourceSets.test.output
+    testCompile project(':knotx-forms-api')
+    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.5.0-SNAPSHOT', classifier: 'tests'
 }
 
 

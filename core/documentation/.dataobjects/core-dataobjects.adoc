@@ -1,5 +1,5 @@
-[[FormsDefinition]]
-== FormsDefinition
+[[FormsKnotDefinition]]
+== FormsKnotDefinition
 
 ++++
  Describes a physical details of HTTP service endpoint that consumes form submitions
@@ -44,7 +44,7 @@ Set the service parameters to be consumed by the adapter.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
-|[[adapters]]`adapters`|`Array of link:cheatsheets.adoc#FormsDefinition[FormsDefinition]`|
+|[[adapters]]`adapters`|`Array of link:cheatsheets.adoc#FormsKnotDefinition[FormsKnotDefinition]`|
 +++
 Sets the adapters that will be responsible for communicating with external services in order to
  process the request.

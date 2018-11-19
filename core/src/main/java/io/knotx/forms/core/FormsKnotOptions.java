@@ -34,7 +34,7 @@ public class FormsKnotOptions {
   public final static String DEFAULT_ADDRESS = "knotx.knot.forms";
 
   private String address;
-  private List<FormsDefinition> adapters;
+  private List<FormsKnotDefinition> adapters;
   private String formIdentifierName;
   private DeliveryOptions deliveryOptions;
 
@@ -104,9 +104,9 @@ public class FormsKnotOptions {
   }
 
   /**
-   * @return list of {@link FormsDefinition}
+   * @return list of {@link FormsKnotDefinition}
    */
-  public List<FormsDefinition> getAdapters() {
+  public List<FormsKnotDefinition> getAdapters() {
     return adapters;
   }
 
@@ -114,10 +114,10 @@ public class FormsKnotOptions {
    * Sets the adapters that will be responsible for communicating with external services in order to
    * process the request.
    *
-   * @param adapters of {@link FormsDefinition} objects representing service
+   * @param adapters of {@link FormsKnotDefinition} objects representing service
    * @return a reference to this, so the API can be used fluently
    */
-  public FormsKnotOptions setAdapters(List<FormsDefinition> adapters) {
+  public FormsKnotOptions setAdapters(List<FormsKnotDefinition> adapters) {
     this.adapters = adapters;
     return this;
   }

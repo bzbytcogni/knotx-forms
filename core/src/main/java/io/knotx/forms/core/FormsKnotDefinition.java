@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * from AdapterServiceKnot.
  */
 @DataObject(generateConverter = true, publicConverter = false)
-public class FormsDefinition {
+public class FormsKnotDefinition {
 
   private String name;
 
@@ -49,7 +49,7 @@ public class FormsDefinition {
   /**
    * Default constructor
    */
-  public FormsDefinition() {
+  public FormsKnotDefinition() {
     init();
   }
 
@@ -59,7 +59,7 @@ public class FormsDefinition {
    *
    * @param other the instance to copy
    */
-  public FormsDefinition(FormsDefinition other) {
+  public FormsKnotDefinition(FormsKnotDefinition other) {
     this.name = other.name;
     this.address = other.address;
     this.params = other.params.copy();
@@ -72,9 +72,9 @@ public class FormsDefinition {
    *
    * @param json the JSON
    */
-  public FormsDefinition(JsonObject json) {
+  public FormsKnotDefinition(JsonObject json) {
     init();
-    FormsDefinitionConverter.fromJson(json, this);
+    FormsKnotDefinitionConverter.fromJson(json, this);
     allowedRequestHeadersPatterns = allowedRequestHeaders.stream().map(Pattern::compile)
         .collect(Collectors.toList());
     allowedResponseHeadersPatterns = allowedResponseHeaders.stream().map(Pattern::compile)
@@ -88,7 +88,7 @@ public class FormsDefinition {
    */
   public JsonObject toJson() {
     JsonObject json = new JsonObject();
-    FormsDefinitionConverter.toJson(this, json);
+    FormsKnotDefinitionConverter.toJson(this, json);
     return json;
   }
 
@@ -110,7 +110,7 @@ public class FormsDefinition {
    * @param name name of the service
    * @return a reference to this, so the API can be used fluently
    */
-  public FormsDefinition setName(String name) {
+  public FormsKnotDefinition setName(String name) {
     this.name = name;
     return this;
   }
@@ -128,7 +128,7 @@ public class FormsDefinition {
    * @param address EB address of the service adapter
    * @return a reference to this, so the API can be used fluently
    */
-  public FormsDefinition setAddress(String address) {
+  public FormsKnotDefinition setAddress(String address) {
     this.address = address;
     return this;
   }
@@ -146,7 +146,7 @@ public class FormsDefinition {
    * @param params JsonObject with the additional parameters
    * @return a reference to this, so the API can be used fluently
    */
-  public FormsDefinition setParams(JsonObject params) {
+  public FormsKnotDefinition setParams(JsonObject params) {
     this.params = params;
     return this;
   }
@@ -166,7 +166,7 @@ public class FormsDefinition {
    * @param allowedRequestHeaders list of header names
    * @return a reference to this, so the API can be used fluently
    */
-  public FormsDefinition setAllowedRequestHeaders(List<String> allowedRequestHeaders) {
+  public FormsKnotDefinition setAllowedRequestHeaders(List<String> allowedRequestHeaders) {
     this.allowedRequestHeaders = allowedRequestHeaders;
     allowedRequestHeadersPatterns = allowedRequestHeaders.stream().map(Pattern::compile)
         .collect(Collectors.toList());
@@ -186,7 +186,7 @@ public class FormsDefinition {
    * @param allowedResponseHeaders list of header names
    * @return a reference to this, so the API can be used fluently
    */
-  public FormsDefinition setAllowedResponseHeaders(List<String> allowedResponseHeaders) {
+  public FormsKnotDefinition setAllowedResponseHeaders(List<String> allowedResponseHeaders) {
     this.allowedResponseHeaders = allowedResponseHeaders;
     allowedResponseHeadersPatterns = allowedResponseHeaders.stream().map(Pattern::compile)
         .collect(Collectors.toList());
@@ -211,7 +211,7 @@ public class FormsDefinition {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FormsDefinition that = (FormsDefinition) o;
+    FormsKnotDefinition that = (FormsKnotDefinition) o;
     return Objects.equal(name, that.name) &&
         Objects.equal(address, that.address) &&
         Objects.equal(params, that.params) &&
