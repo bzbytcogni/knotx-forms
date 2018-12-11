@@ -106,13 +106,13 @@ public class FormsKnotProxy extends AbstractKnotProxy {
       form.fragment()
           .content(simplifier.transform(form.fragment().content(), options.getFormIdentifierName(),
               form.identifier()));
-    } catch (Throwable t) {
-      LOGGER.error("Fragment processing failed. Cause:{}\nForm:\n{}\n", t.getMessage(), form);
+    } catch (Exception e) {
+      LOGGER.error("Fragment processing failed. Cause:{}\nForm:\n{}\n", e.getMessage(), form);
       String knotId = form.fragment().knots().stream()
           .filter(knot -> knot.startsWith(FormConstants.FRAGMENT_KNOT_PREFIX))
           .findFirst()
           .get();
-      form.fragment().failure(knotId, t);
+      form.fragment().failure(knotId, e);
       if (!form.fragment().fallback().isPresent()) {
         throw new FragmentProcessingException("From Fragment processing failed", t);
       }
