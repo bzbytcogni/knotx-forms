@@ -20,6 +20,7 @@ import static io.knotx.forms.api.FormFragmentConstants.FRAGMENT_FORM_CONTEXT;
 import io.knotx.dataobjects.ClientRequest;
 import io.knotx.dataobjects.ClientResponse;
 import io.knotx.dataobjects.KnotContext;
+import io.knotx.exceptions.FragmentProcessingException;
 import io.knotx.forms.api.FormsAdapterRequest;
 import io.knotx.forms.api.FormsAdapterResponse;
 import io.knotx.forms.core.domain.FormConstants;
@@ -94,10 +95,28 @@ public class FormsKnotProxy extends AbstractKnotProxy {
   private KnotContext handleGetMethod(List<FormEntity> forms, KnotContext knotContext) {
     LOGGER.debug("Pass-through {} request", knotContext.getClientRequest().getMethod());
     knotContext.setTransition(DEFAULT_TRANSITION);
-    forms.forEach(form -> form.fragment()
-        .content(simplifier.transform(form.fragment().content(), options.getFormIdentifierName(),
-            form.identifier())));
+    forms.stream()
+        .filter(form -> shouldProcess(form.fragment()))
+        .forEach(this::transform);
     return knotContext;
+  }
+
+  private void transform(FormEntity form) {
+    try {
+      form.fragment()
+          .content(simplifier.transform(form.fragment().content(), options.getFormIdentifierName(),
+              form.identifier()));
+    } catch (Throwable t) {
+      LOGGER.error("Fragment processing failed. Cause:{}\nForm:\n{}\n", t.getMessage(), form);
+      String knotId = form.fragment().knots().stream()
+          .filter(knot -> knot.startsWith(FormConstants.FRAGMENT_KNOT_PREFIX))
+          .findFirst()
+          .get();
+      form.fragment().failure(knotId, t);
+      if (!form.fragment().fallback().isPresent()) {
+        throw new FragmentProcessingException("From Fragment processing failed", t);
+      }
+    }
   }
 
   private Single<FormsAdapterResponse> callFormsAdapter(KnotContext knotContext,
