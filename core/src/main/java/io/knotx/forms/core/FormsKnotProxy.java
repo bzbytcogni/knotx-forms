@@ -114,7 +114,7 @@ public class FormsKnotProxy extends AbstractKnotProxy {
           .get();
       form.fragment().failure(knotId, e);
       if (!form.fragment().fallback().isPresent()) {
-        throw new FragmentProcessingException("From Fragment processing failed", t);
+        throw new FragmentProcessingException("From Fragment processing failed", e);
       }
     }
   }
