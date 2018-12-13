@@ -26,14 +26,3 @@ dependencies {
   testCompile project(':knotx-forms-core')
   testCompile "io.vertx:vertx-web-client"
 }
-
-sourceSets {
-  test {
-    resources {
-      srcDirs += [
-          '../conf',
-          project(':knotx-forms-core').sourceSets.test.resources
-      ]
-    }
-  }
-}
