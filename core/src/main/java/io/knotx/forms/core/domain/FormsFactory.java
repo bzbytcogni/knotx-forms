@@ -19,8 +19,12 @@ import io.knotx.dataobjects.KnotContext;
 import io.knotx.forms.core.FormsKnotOptions;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.BooleanUtils;
 
 public final class FormsFactory {
 
@@ -36,15 +40,42 @@ public final class FormsFactory {
             FormConstants.FRAGMENT_KNOT_PREFIX)))
         .map(f -> FormEntity.from(f, options))
         .collect(Collectors.toList());
-    if (areUnique(forms)) {
+    if (areNotUnique(forms)) {
       LOGGER.error("Form identifiers are not unique [{}]", forms.stream().map(FormEntity::identifier).toArray());
-      throw new IllegalStateException("Form identifiers are not unique!");
+      Set<String> duplicates = findDuplicateIds(forms);
+      boolean fallbackDetected = markDuplicatesAndVerifyFallback(forms, duplicates);
+      throw new FormConfigurationException("Form identifiers are not unique!", fallbackDetected);
     }
     return forms;
   }
 
-  private static boolean areUnique(List<FormEntity> forms) {
+  private static boolean areNotUnique(List<FormEntity> forms) {
     return forms.size() != forms.stream().map(FormEntity::identifier).collect(Collectors.toSet()).size();
+  }
+
+  private static Set<String> findDuplicateIds(Collection<FormEntity> collection) {
+    Set<String> uniques = new HashSet<String>();
+    return collection.stream()
+        .map(FormEntity::identifier)
+        .filter(e -> !uniques.add(e))
+        .collect(Collectors.toSet());
+  }
+
+  private static boolean markDuplicatesAndVerifyFallback(List<FormEntity> forms, Set<String> duplicateIds) {
+    return forms.stream()
+        .filter(f -> duplicateIds.contains(f.identifier()))
+        .map(FormsFactory::markAsDuplicateAndVerifyFallback)
+        .allMatch(BooleanUtils::isTrue);
+  }
+
+  private static boolean markAsDuplicateAndVerifyFallback(FormEntity form) {
+    String knotId = form.fragment().knots().stream()
+        .filter(knot -> knot.startsWith(FormConstants.FRAGMENT_KNOT_PREFIX))
+        .findFirst()
+        .get();
+
+    form.fragment().failure(knotId, new IllegalStateException(String.format("Duplicate form ID %s", form.identifier())));
+    return form.fragment().fallback().isPresent();
   }
 
 }

@@ -49,13 +49,21 @@ public class FormEntity {
 
   public static FormEntity from(Fragment fragment, FormsKnotOptions options) {
     Element scriptDocument = FragmentContentExtractor.unwrapFragmentContent(fragment);
-    return new FormEntity()
-        .fragment(fragment)
-        .identifier(getFormIdentifier(fragment))
-        .adapterParams(getAdapterParams(scriptDocument))
-        .adapter(getAdapterMetadata(options, getAdapterName(fragment, scriptDocument)))
-        .signalToUrlMapping(getSignalToUrlMapping(scriptDocument));
-
+    try {
+      return new FormEntity()
+          .fragment(fragment)
+          .identifier(getFormIdentifier(fragment))
+          .adapterParams(getAdapterParams(scriptDocument))
+          .adapter(getAdapterMetadata(options, getAdapterName(fragment, scriptDocument)))
+          .signalToUrlMapping(getSignalToUrlMapping(scriptDocument));
+    } catch (Exception e) {
+      String knotId = fragment.knots().stream()
+          .filter(knot -> knot.startsWith(FormConstants.FRAGMENT_KNOT_PREFIX))
+          .findFirst()
+          .get();
+      fragment.failure(knotId, e);
+      throw new FormConfigurationException(e.getMessage(), e.getCause(), fragment.fallback().isPresent());
+    }
   }
 
   public Fragment fragment() {

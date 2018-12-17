@@ -23,8 +23,10 @@ import io.knotx.dataobjects.KnotContext;
 import io.knotx.exceptions.FragmentProcessingException;
 import io.knotx.forms.api.FormsAdapterRequest;
 import io.knotx.forms.api.FormsAdapterResponse;
+import io.knotx.forms.core.domain.FormConfigurationException;
 import io.knotx.forms.core.domain.FormConstants;
 import io.knotx.forms.core.domain.FormEntity;
+import io.knotx.forms.core.domain.FormProcessingException;
 import io.knotx.forms.core.domain.FormTransformer;
 import io.knotx.forms.core.domain.FormsFactory;
 import io.knotx.http.AllowedHeadersFilter;
@@ -41,7 +43,9 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.reactivex.core.MultiMap;
 import io.vertx.reactivex.core.Vertx;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
@@ -78,6 +82,7 @@ public class FormsKnotProxy extends AbstractKnotProxy {
         .onErrorReturn(error -> processError(knotContext, error));
   }
 
+
   @Override
   protected boolean shouldProcess(Set<String> knots) {
     return knots.stream().anyMatch(knot -> knot.startsWith(FormConstants.FRAGMENT_KNOT_PREFIX));
@@ -86,10 +91,23 @@ public class FormsKnotProxy extends AbstractKnotProxy {
   @Override
   protected KnotContext processError(KnotContext context, Throwable error) {
     LOGGER.error("Could not process template [{}]", context.getClientRequest().getPath(), error);
+    if (error instanceof FormConfigurationException &&  ((FormConfigurationException)error).isFallbackDetected()) {
+      return fallback(context);
+    }
     KnotContext errorResponse = new KnotContext().setClientResponse(context.getClientResponse());
     errorResponse.getClientResponse()
         .setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
     return errorResponse;
+  }
+
+  private KnotContext fallback(KnotContext context) {
+    LOGGER.error("Fallback detected, processing should be continued");
+    return new KnotContext()
+        .setClientRequest(context.getClientRequest())
+        .setClientResponse(context.getClientResponse())
+        .setFragments(
+            Optional.ofNullable(context.getFragments()).orElse(Collections.emptyList()))
+        .setTransition(DEFAULT_TRANSITION);
   }
 
   private KnotContext handleGetMethod(List<FormEntity> forms, KnotContext knotContext) {
