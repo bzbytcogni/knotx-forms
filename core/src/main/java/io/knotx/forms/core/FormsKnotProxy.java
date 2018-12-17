@@ -91,7 +91,7 @@ public class FormsKnotProxy extends AbstractKnotProxy {
   protected KnotContext processError(KnotContext context, Throwable error) {
     LOGGER.error("Could not process template [{}]", context.getClientRequest().getPath(), error);
     KnotContext result = null;
-    if (error instanceof FormConfigurationException &&  ((FormConfigurationException)error).isFallbackDefined()) {
+    if (isFallbackDefined(error)) {
       result = fallback(context);
     } else {
       result = new KnotContext().setClientResponse(context.getClientResponse());
