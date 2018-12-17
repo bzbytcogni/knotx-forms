@@ -26,7 +26,6 @@ import io.knotx.forms.api.FormsAdapterResponse;
 import io.knotx.forms.core.domain.FormConfigurationException;
 import io.knotx.forms.core.domain.FormConstants;
 import io.knotx.forms.core.domain.FormEntity;
-import io.knotx.forms.core.domain.FormProcessingException;
 import io.knotx.forms.core.domain.FormTransformer;
 import io.knotx.forms.core.domain.FormsFactory;
 import io.knotx.http.AllowedHeadersFilter;
