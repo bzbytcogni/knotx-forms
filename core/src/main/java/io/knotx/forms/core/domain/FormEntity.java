@@ -48,9 +48,10 @@ public class FormEntity {
   private Map<String, String> signalToUrl;
 
   public static FormEntity from(Fragment fragment, FormsKnotOptions options) {
+    FormEntity result = null;
     Element scriptDocument = FragmentContentExtractor.unwrapFragmentContent(fragment);
     try {
-      return new FormEntity()
+      result = new FormEntity()
           .fragment(fragment)
           .identifier(getFormIdentifier(fragment))
           .adapterParams(getAdapterParams(scriptDocument))
@@ -62,8 +63,11 @@ public class FormEntity {
           .findFirst()
           .get();
       fragment.failure(knotId, e);
-      throw new FormConfigurationException(e.getMessage(), e.getCause(), fragment.fallback().isPresent());
+      if (!fragment.fallback().isPresent()) {
+        throw new FormConfigurationException(e.getMessage(), e.getCause(), fragment.fallback().isPresent());
+      }
     }
+    return result;
   }
 
   public Fragment fragment() {

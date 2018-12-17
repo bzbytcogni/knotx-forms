@@ -22,9 +22,9 @@ import io.vertx.core.logging.LoggerFactory;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.BooleanUtils;
 
 public final class FormsFactory {
 
@@ -39,17 +39,27 @@ public final class FormsFactory {
         .filter(f -> f.knots().stream().anyMatch(id -> id.startsWith(
             FormConstants.FRAGMENT_KNOT_PREFIX)))
         .map(f -> FormEntity.from(f, options))
+        .filter(Objects::nonNull)
         .collect(Collectors.toList());
-    if (areNotUnique(forms)) {
+
+    if (formIdentifiersAreNotUnique(forms)) {
       LOGGER.error("Form identifiers are not unique [{}]", forms.stream().map(FormEntity::identifier).toArray());
       Set<String> duplicates = findDuplicateIds(forms);
-      boolean fallbackDetected = markDuplicatesAndVerifyFallback(forms, duplicates);
-      throw new FormConfigurationException("Form identifiers are not unique!", fallbackDetected);
+      markDuplicatesAsFailed(forms, duplicates);
+      boolean fallbackDetected = verifyAllFailedFragmentsHaveFallback(forms);
+      if (fallbackDetected) {
+        forms = forms.stream()
+            .filter(form -> !duplicates.contains(form.identifier()))
+            .collect(Collectors.toList());
+      } else {
+        throw new FormConfigurationException("Form identifiers are not unique!", fallbackDetected);
+      }
     }
+
     return forms;
   }
 
-  private static boolean areNotUnique(List<FormEntity> forms) {
+  private static boolean formIdentifiersAreNotUnique(List<FormEntity> forms) {
     return forms.size() != forms.stream().map(FormEntity::identifier).collect(Collectors.toSet()).size();
   }
 
@@ -61,21 +71,25 @@ public final class FormsFactory {
         .collect(Collectors.toSet());
   }
 
-  private static boolean markDuplicatesAndVerifyFallback(List<FormEntity> forms, Set<String> duplicateIds) {
-    return forms.stream()
+  private static void markDuplicatesAsFailed(List<FormEntity> forms, Set<String> duplicateIds) {
+    forms.stream()
         .filter(f -> duplicateIds.contains(f.identifier()))
-        .map(FormsFactory::markAsDuplicateAndVerifyFallback)
-        .allMatch(BooleanUtils::isTrue);
+        .forEach(FormsFactory::markDuplicateAsFailed);
   }
 
-  private static boolean markAsDuplicateAndVerifyFallback(FormEntity form) {
+  private static void markDuplicateAsFailed(FormEntity form) {
     String knotId = form.fragment().knots().stream()
         .filter(knot -> knot.startsWith(FormConstants.FRAGMENT_KNOT_PREFIX))
         .findFirst()
         .get();
 
     form.fragment().failure(knotId, new IllegalStateException(String.format("Duplicate form ID %s", form.identifier())));
-    return form.fragment().fallback().isPresent();
+  }
+
+  private static boolean verifyAllFailedFragmentsHaveFallback(List<FormEntity> forms) {
+    return forms.stream()
+        .filter(f -> f.fragment().failed())
+        .allMatch(f -> f.fragment().fallback().isPresent());
   }
 
 }

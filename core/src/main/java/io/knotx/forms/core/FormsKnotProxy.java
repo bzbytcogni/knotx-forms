@@ -90,17 +90,23 @@ public class FormsKnotProxy extends AbstractKnotProxy {
   @Override
   protected KnotContext processError(KnotContext context, Throwable error) {
     LOGGER.error("Could not process template [{}]", context.getClientRequest().getPath(), error);
-    if (error instanceof FormConfigurationException &&  ((FormConfigurationException)error).isFallbackDetected()) {
-      return fallback(context);
+    KnotContext result = null;
+    if (error instanceof FormConfigurationException &&  ((FormConfigurationException)error).isFallbackDefined()) {
+      result = fallback(context);
+    } else {
+      result = new KnotContext().setClientResponse(context.getClientResponse());
+      result.getClientResponse()
+          .setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
     }
-    KnotContext errorResponse = new KnotContext().setClientResponse(context.getClientResponse());
-    errorResponse.getClientResponse()
-        .setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
-    return errorResponse;
+    return result;
+  }
+
+  private boolean isFallbackDefined(Throwable error) {
+    return error instanceof FormConfigurationException &&  ((FormConfigurationException)error).isFallbackDefined();
   }
 
   private KnotContext fallback(KnotContext context) {
-    LOGGER.error("Fallback detected, processing should be continued");
+    LOGGER.debug("Fallback detected, processing should be continued");
     return new KnotContext()
         .setClientRequest(context.getClientRequest())
         .setClientResponse(context.getClientResponse())
