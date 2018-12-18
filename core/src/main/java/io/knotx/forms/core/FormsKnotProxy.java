@@ -73,7 +73,7 @@ public class FormsKnotProxy extends AbstractKnotProxy {
         .flattenAsObservable(KnotContext::getFragments)
         .filter(f -> f.knots().stream().anyMatch(id -> id.startsWith(
             FormConstants.FRAGMENT_KNOT_PREFIX)))
-        .map(f -> Optional.of(FormEntity.from(f, options)))
+        .map(f -> Optional.of(FormEntity.of(f, options)))
         .onErrorReturn(this::handleFallback)
         .filter(Optional::isPresent)
         .map(Optional::get)
