@@ -9,6 +9,9 @@ It transforms a form template to Knot.x agnostic one for GET requests. When clie
 Forms Knot calls configured Adapter and based on its response redirect the client to a
 successful / error / next step page.
 
+Current implementation of Forms module enables to use only a single `<form>` within one Fragment (snippet).
+However, you may have as many snippets with forms as you want in a single page template.
+
 Let's describe Forms Knot behaviour with following example.
 
 ### Example
