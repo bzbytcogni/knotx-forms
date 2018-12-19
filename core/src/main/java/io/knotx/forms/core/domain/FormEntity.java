@@ -24,6 +24,7 @@ import io.knotx.fragments.FragmentContentExtractor;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import java.text.Normalizer.Form;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -47,15 +48,23 @@ public class FormEntity {
 
   private Map<String, String> signalToUrl;
 
-  public static FormEntity from(Fragment fragment, FormsKnotOptions options) {
+  public static FormEntity of(Fragment fragment, FormsKnotOptions options) {
     Element scriptDocument = FragmentContentExtractor.unwrapFragmentContent(fragment);
-    return new FormEntity()
-        .fragment(fragment)
-        .identifier(getFormIdentifier(fragment))
-        .adapterParams(getAdapterParams(scriptDocument))
-        .adapter(getAdapterMetadata(options, getAdapterName(fragment, scriptDocument)))
-        .signalToUrlMapping(getSignalToUrlMapping(scriptDocument));
-
+    try {
+      return new FormEntity()
+          .fragment(fragment)
+          .identifier(getFormIdentifier(fragment))
+          .adapterParams(getAdapterParams(scriptDocument))
+          .adapter(getAdapterMetadata(options, getAdapterName(fragment, scriptDocument)))
+          .signalToUrlMapping(getSignalToUrlMapping(scriptDocument));
+    } catch (Exception e) {
+      String knotId = fragment.knots().stream()
+          .filter(knot -> knot.startsWith(FormConstants.FRAGMENT_KNOT_PREFIX))
+          .findFirst()
+          .get();
+      fragment.failure(knotId, e);
+      throw new FormConfigurationException(e.getMessage(), e.getCause(), fragment.fallback().isPresent());
+    }
   }
 
   public Fragment fragment() {
@@ -85,7 +94,7 @@ public class FormEntity {
   }
 
   private static Optional<String> getFormIdentifierFromRequest(KnotContext knotContext,
-      String formIdAttrName) {
+                                                               String formIdAttrName) {
     return Optional.ofNullable(
         knotContext.getClientRequest().getFormAttributes().get(formIdAttrName));
   }
@@ -147,7 +156,7 @@ public class FormEntity {
   }
 
   private static FormsKnotDefinition getAdapterMetadata(FormsKnotOptions options,
-      String adapter) {
+                                                        String adapter) {
     return options.getAdapters().stream()
         .filter(metadata -> metadata.getName().equals(adapter))
         .findFirst()

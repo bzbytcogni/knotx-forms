@@ -23,10 +23,12 @@ import io.knotx.dataobjects.KnotContext;
 import io.knotx.exceptions.FragmentProcessingException;
 import io.knotx.forms.api.FormsAdapterRequest;
 import io.knotx.forms.api.FormsAdapterResponse;
+import io.knotx.forms.core.domain.FormConfigurationException;
 import io.knotx.forms.core.domain.FormConstants;
 import io.knotx.forms.core.domain.FormEntity;
+import io.knotx.forms.core.domain.FormProcessingException;
 import io.knotx.forms.core.domain.FormTransformer;
-import io.knotx.forms.core.domain.FormsFactory;
+import io.knotx.forms.core.domain.FormEntityDeduplicator;
 import io.knotx.http.AllowedHeadersFilter;
 import io.knotx.http.MultiMapCollector;
 import io.knotx.knot.AbstractKnotProxy;
@@ -41,7 +43,9 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.reactivex.core.MultiMap;
 import io.vertx.reactivex.core.Vertx;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
@@ -64,18 +68,37 @@ public class FormsKnotProxy extends AbstractKnotProxy {
 
   @Override
   public Single<KnotContext> processRequest(final KnotContext knotContext) {
+
     return Single.just(knotContext)
-        .map(context -> FormsFactory.create(context, options))
-        .flatMap(forms -> {
-          if (knotContext.getClientRequest().getMethod() == HttpMethod.GET) {
-            return Single.just(handleGetMethod(forms, knotContext));
-          } else {
-            FormEntity current = currentForm(forms, knotContext);
-            return callFormsAdapter(knotContext, current)
-                .map(response -> processAdapterResponse(knotContext, forms, current, response));
-          }
-        })
+        .flattenAsObservable(KnotContext::getFragments)
+        .filter(f -> f.knots().stream().anyMatch(id -> id.startsWith(
+            FormConstants.FRAGMENT_KNOT_PREFIX)))
+        .map(f -> Optional.of(FormEntity.of(f, options)))
+        .onErrorReturn(this::handleFallback)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .toList()
+        .map(FormEntityDeduplicator::uniqueFormEntities)
+        .flatMap(forms -> processForms(forms, knotContext))
         .onErrorReturn(error -> processError(knotContext, error));
+  }
+
+  private Single<KnotContext> processForms(List<FormEntity> forms, KnotContext knotContext) {
+    if (knotContext.getClientRequest().getMethod() == HttpMethod.GET) {
+      return Single.just(handleGetMethod(forms, knotContext));
+    } else {
+      FormEntity current = currentForm(forms, knotContext);
+      return callFormsAdapter(knotContext, current)
+          .map(response -> processAdapterResponse(knotContext, forms, current, response));
+    }
+  }
+
+  private Optional<FormEntity> handleFallback(Throwable error) {
+    if (isFallbackDefined(error)) {
+      return Optional.empty();
+    } else {
+      throw new FormProcessingException(error);
+    }
   }
 
   @Override
@@ -86,10 +109,29 @@ public class FormsKnotProxy extends AbstractKnotProxy {
   @Override
   protected KnotContext processError(KnotContext context, Throwable error) {
     LOGGER.error("Could not process template [{}]", context.getClientRequest().getPath(), error);
-    KnotContext errorResponse = new KnotContext().setClientResponse(context.getClientResponse());
-    errorResponse.getClientResponse()
-        .setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
-    return errorResponse;
+    KnotContext result = null;
+    if (isFallbackDefined(error)) {
+      result = fallback(context);
+    } else {
+      result = new KnotContext().setClientResponse(context.getClientResponse());
+      result.getClientResponse()
+          .setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
+    }
+    return result;
+  }
+
+  private boolean isFallbackDefined(Throwable error) {
+    return error instanceof FormConfigurationException &&  ((FormConfigurationException)error).isFallbackDefined();
+  }
+
+  private KnotContext fallback(KnotContext context) {
+    LOGGER.debug("Fallback detected, processing should be continued");
+    return new KnotContext()
+        .setClientRequest(context.getClientRequest())
+        .setClientResponse(context.getClientResponse())
+        .setFragments(
+            Optional.ofNullable(context.getFragments()).orElse(Collections.emptyList()))
+        .setTransition(DEFAULT_TRANSITION);
   }
 
   private KnotContext handleGetMethod(List<FormEntity> forms, KnotContext knotContext) {
