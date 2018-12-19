@@ -9,9 +9,9 @@
 
 rootProject.name = 'knotx-forms'
 
-include 'knotx-forms-core'
-project(":knotx-forms-core").projectDir = file("core")
 include 'knotx-forms-api'
 project(":knotx-forms-api").projectDir = file("api")
+include 'knotx-forms-core'
+project(":knotx-forms-core").projectDir = file("core")
 include 'knotx-forms-it-test'
 project(":knotx-forms-it-test").projectDir = file("it-test")

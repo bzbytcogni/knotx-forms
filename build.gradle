@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 plugins {
   id 'io.spring.dependency-management' version '1.0.5.RELEASE' apply false
   id 'maven'
@@ -23,6 +24,7 @@ allprojects {
     mavenLocal()
     jcenter()
     maven { url 'https://plugins.gradle.org/m2/' }
+    maven { url "https://oss.sonatype.org/content/groups/staging/" }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
   }
 }
@@ -46,7 +48,7 @@ subprojects { subproject ->
 
   dependencyManagement {
     imports {
-      mavenBom 'io.knotx:knotx-dependencies:1.5.0-SNAPSHOT'
+      mavenBom "io.knotx:knotx-dependencies:${project.version}"
     }
   }
 
