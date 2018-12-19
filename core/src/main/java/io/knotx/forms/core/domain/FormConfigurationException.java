@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = "Knot.x Forms Integration Tests"
+package io.knotx.forms.core.domain;
 
-compileJava.dependsOn annotationProcessing
+public class FormConfigurationException extends RuntimeException {
+  private final boolean fallbackDefined;
 
-dependencies {
-  compileOnly project(':knotx-forms-api')
-  compileOnly project(':knotx-forms-core')
-  compileOnly "io.vertx:vertx-web-client"
+  public FormConfigurationException(String message, Throwable cause, boolean fallbackDetected) {
+    super(message, cause);
+    this.fallbackDefined = fallbackDetected;
+  }
 
-  testCompile project(':knotx-forms-api')
-  testCompile project(':knotx-forms-core')
-  testCompile "io.vertx:vertx-web-client"
+  public FormConfigurationException(String message, boolean fallbackDetected) {
+    super(message);
+    this.fallbackDefined = fallbackDetected;
+  }
+
+  public boolean isFallbackDefined() {
+    return fallbackDefined;
+  }
 }

@@ -149,6 +149,7 @@ public class FormsKnotOptions {
    * Sets the name of the hidden input tag which is added by Forms Knot.
    *
    * @param formIdentifierName the form identifier name
+   * @return a reference to this, so the API can be used fluently
    */
   public FormsKnotOptions setFormIdentifierName(String formIdentifierName) {
     this.formIdentifierName = formIdentifierName;
