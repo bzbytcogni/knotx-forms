@@ -34,6 +34,7 @@ defaultTasks = ['build']
 subprojects { subproject ->
   group = 'io.knotx'
 
+  apply plugin: 'maven'
   apply plugin: 'java-library'
   apply plugin: 'io.spring.dependency-management'
 
