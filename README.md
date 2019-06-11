@@ -1,3 +1,10 @@
+
+> If you are looking for examples with Knot.x 1.X version please see this repository Tags,
+the latest 1.5.0 version code is available
+[here](https://github.com/Knotx/knotx-example-project/tree/1.5.0).
+
+> This module is **NOT** supported in Knot.x 2.0.
+
 # Forms Knot
 Forms Knot is an Knot implementation responsible for forms submissions handling. It supports
 simple (without file upload) forms including redirection to successful pages and multi-step forms flows.
